@@ -1,0 +1,19 @@
+{
+  "name": "solid",
+  "version": "0.0.1",
+  "description": "A polling platform.",
+  "scripts": {
+    "dev": "concurrently \"cd backend && npm run start\" \"cd frontend && npm run dev\"",
+    "setup": "npm install && cd frontend && npm install && cd ../backend && npm install",
+    "precommit": "cd backend && npm run test && npm run lint"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/solid-polls/solid.git"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/solid-polls/solid",
+  "devDependencies": {
+    "concurrently": "^7.2.1"
+  }
+}
