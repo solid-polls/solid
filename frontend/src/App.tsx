@@ -1,15 +1,23 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import logo from './logo.svg'
 import './App.css'
+import { DefaultApi, DefaultConfig } from './client';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(0);
+
+  const [response, setResponse] = useState<string | null>(null);
+
+  useEffect(() => {
+    new DefaultApi().appControllerGetHello().then(resp => setResponse(resp))
+  });
 
   return (
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>Hello Vite + React!</p>
+        {response !== null && <div>Received response from API: {response}</div>}
         <p>
           <button type="button" onClick={() => setCount((count) => count + 1)}>
             count is: {count}
