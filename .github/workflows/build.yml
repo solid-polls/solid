@@ -19,10 +19,10 @@ jobs:
       with:
         push: true
         context: ./frontend
-        tags: ghcr.io/solid-polls/solid/solid-frontend:${GITHUB_REF##*/}
+        tags: ghcr.io/solid-polls/solid/solid-frontend:${{GITHUB_REF##*/}}
     - name: Build Backend
       uses: docker/build-push-action@v2
       with:
         push: true
         context: ./backend
-        tags: ghcr.io/solid-polls/solid/solid-backend:${GITHUB_REF##*/}
+        tags: ghcr.io/solid-polls/solid/solid-backend:${{GITHUB_REF##*/}}
