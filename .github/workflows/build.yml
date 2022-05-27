@@ -3,9 +3,6 @@ name: Docker Image CI
 on:
   push:
     branches: [ main, ci-pipeline ]
-  pull_request:
-    branches: [ main, ci-pipeline ]
-
 jobs:
   build:
     runs-on: ubuntu-latest
