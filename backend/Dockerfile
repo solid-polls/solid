@@ -9,7 +9,9 @@ COPY package*.json ./
 RUN npm ci
 
 COPY --chown=node:node . .
-RUN npm run build \
+RUN npm run lint:check \
+    && npm run test \
+    && npm run build \
     && npm prune --production
 
 
