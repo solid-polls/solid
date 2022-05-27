@@ -3,7 +3,8 @@ WORKDIR /app
 COPY package*.json .
 RUN npm ci
 COPY . .
-RUN npm run build
+RUN npm run codegen \
+    && npm run build
 
 FROM nginx:1.12-alpine
 COPY --from=build-deps /app/dist /usr/share/nginx/html
