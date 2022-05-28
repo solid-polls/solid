@@ -3,9 +3,10 @@
   "version": "0.0.1",
   "description": "A polling platform.",
   "scripts": {
-    "dev": "concurrently \"cd backend && npm run start\" \"cd frontend && npm run dev\"",
+    "dev": "concurrently \"cd backend && npm run start:dev\" \"cd frontend && npm run dev\"",
     "setup": "npm install && cd frontend && npm install && cd ../backend && npm install",
-    "precommit": "cd backend && npm run test && npm run lint"
+    "precommit": "cd backend && npm run test && npm run lint",
+    "codegen:full": "curl http://localhost:3000/docs-json > frontend/src/api/swagger.json && cd backend && npx prettier --write ../frontend/src/api/swagger.json && cd ../frontend && npm run codegen"
   },
   "repository": {
     "type": "git",

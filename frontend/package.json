@@ -5,13 +5,15 @@
   "scripts": {
     "dev": "vite --port 8000",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "codegen": "rm -rf src/client && openapi-generator-cli generate -i src/api/swagger.json -o src/client --generator-name typescript-fetch"
   },
   "dependencies": {
     "react": "^18.0.0",
     "react-dom": "^18.0.0"
   },
   "devDependencies": {
+    "@openapitools/openapi-generator-cli": "^2.5.1",
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
     "@vitejs/plugin-react": "^1.3.0",
