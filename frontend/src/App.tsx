@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import logo from './logo.svg'
 import './App.css'
-import { DefaultApi, DefaultConfig } from './client';
+import {defaultApi} from "./api";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -9,7 +9,7 @@ function App() {
   const [response, setResponse] = useState<string | null>(null);
 
   useEffect(() => {
-    new DefaultApi().appControllerGetHello().then(resp => setResponse(resp))
+    defaultApi.appControllerGetHello().then(resp => setResponse(resp));
   });
 
   return (
