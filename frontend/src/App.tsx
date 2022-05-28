@@ -1,53 +1,33 @@
-import { useEffect, useState } from 'react'
-import logo from './logo.svg'
-import './App.css'
 import {defaultApi} from "./api";
+import {useQuery} from "react-query";
+import {Link, Route, Switch } from "wouter";
 
-function App() {
-  const [count, setCount] = useState(0);
-
-  const [response, setResponse] = useState<string | null>(null);
-
-  useEffect(() => {
-    defaultApi.appControllerGetHello().then(resp => setResponse(resp));
-  });
+function Home() {
+  const { isLoading, isSuccess, isError, data } = useQuery('hello', () => defaultApi.appControllerGetHello());
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>Hello Vite + React!</p>
-        {response !== null && <div>Received response from API: {response}</div>}
-        <p>
-          <button type="button" onClick={() => setCount((count) => count + 1)}>
-            count is: {count}
-          </button>
-        </p>
-        <p>
-          Edit <code>App.tsx</code> and save to test HMR updates.
-        </p>
-        <p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-          {' | '}
-          <a
-            className="App-link"
-            href="https://vitejs.dev/guide/features.html"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Vite Docs
-          </a>
-        </p>
-      </header>
-    </div>
-  )
+      <div>
+        <h1>Home Page</h1>
+        {isLoading && <div>Loading ...</div>}
+        {isSuccess && <div>Here is your API data: {data}</div>}
+        {isError && <div>Could not fetch resource</div>}
+        <Link href='/second'>Go to second</Link>
+      </div>
+  );
+}
+
+function Second() {
+  return <div>
+    <h1>Second page</h1>
+    <Link href="/">Go Back</Link>
+  </div>
+}
+
+function App() {
+  return <Switch>
+    <Route path='/second' component={() => <Second />} />
+    <Route path='/' component={() => <Home />} />
+  </Switch>;
 }
 
 export default App
