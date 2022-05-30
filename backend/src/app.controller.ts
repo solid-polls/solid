@@ -7,13 +7,13 @@ import Poll from './models/poll';
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  @Get("poll")
+  @Get('poll')
   @ApiOkResponse({ type: Poll })
   @ApiNotFoundResponse()
   async getPoll(@Query('code') code: number): Promise<Poll> {
     const poll = await this.appService.getPoll(code);
     if (!poll) {
-      throw new NotFoundException;
+      throw new NotFoundException();
     }
     return poll;
   }
