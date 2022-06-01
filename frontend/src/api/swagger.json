@@ -1,17 +1,27 @@
 {
   "openapi": "3.0.0",
   "paths": {
-    "/": {
+    "/poll": {
       "get": {
-        "operationId": "AppController_getHello",
-        "parameters": [],
+        "operationId": "AppController_getPoll",
+        "parameters": [
+          {
+            "name": "code",
+            "required": true,
+            "in": "query",
+            "schema": { "type": "number" }
+          }
+        ],
         "responses": {
           "200": {
             "description": "",
             "content": {
-              "application/json": { "schema": { "type": "string" } }
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Poll" }
+              }
             }
-          }
+          },
+          "404": { "description": "" }
         }
       }
     }
@@ -27,5 +37,17 @@
     { "url": "http://localhost:3000", "description": "Testing" },
     { "url": "https://solidpolls.de/api", "description": "Production" }
   ],
-  "components": { "schemas": {} }
+  "components": {
+    "schemas": {
+      "Poll": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "number" },
+          "title": { "type": "string" },
+          "code": { "type": "number" }
+        },
+        "required": ["id", "title", "code"]
+      }
+    }
+  }
 }
