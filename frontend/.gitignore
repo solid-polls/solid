@@ -23,5 +23,8 @@ dist-ssr
 *.sln
 *.sw?
 
+!.prettierrc
+!.eslintrc.js
+
 src/client
 !src/client/.gitkeep
