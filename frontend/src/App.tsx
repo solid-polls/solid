@@ -16,15 +16,15 @@ function PollPage(props: PollPageProps) {
 
   return (
     <>
-      <Typography variant="h1">Poll Page</Typography>
-      {isLoading && <Typography variant="body1">Loading ...</Typography>}
+      <Typography variant='h1'>Poll Page</Typography>
+      {isLoading && <Typography variant='body1'>Loading ...</Typography>}
       {isSuccess && (
-        <Typography variant="body1">
+        <Typography variant='body1'>
           The poll: {JSON.stringify(data)}
         </Typography>
       )}
       {isError && (
-        <Typography variant="body1">
+        <Typography variant='body1'>
           Could not fetch resource: {JSON.stringify(error)}
         </Typography>
       )}
@@ -36,17 +36,17 @@ function HomePage() {
   const [code, setCode] = useState('');
   return (
     <>
-      <Typography variant="h1">Home</Typography>
-      <Typography variant="body1">Please type in the poll code:</Typography>
+      <Typography variant='h1'>Home</Typography>
+      <Typography variant='body1'>Please type in the poll code:</Typography>
       <Stack spacing={1} marginTop={1}>
         <TextField
-          label="Poll code"
-          type="text"
-          variant="outlined"
+          label='Poll code'
+          type='text'
+          variant='outlined'
           onChange={(event) => setCode(event.target.value)}
         />
         <Link href={`/poll/${code}`}>
-          <Button variant="contained" type="submit">
+          <Button variant='contained' type='submit'>
             Join Poll
           </Button>
         </Link>
@@ -57,7 +57,7 @@ function HomePage() {
 
 function App() {
   return (
-    <Container maxWidth="sm">
+    <Container maxWidth='sm'>
       {/* <div>
         <Link href="/">SolidPolls</Link>
       </div> */}
