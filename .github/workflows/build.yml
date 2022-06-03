@@ -28,8 +28,14 @@ jobs:
         context: ./backend
         tags: ghcr.io/solid-polls/solid/solid-backend:${{ env.BRANCH }}
     - uses: danielr1996/kubectl-action@1.0.0
-      name: Deploy
+      name: Deploy Frontend
       if: ${{ env.BRANCH == 'main' }}
       with:
         kubeconfig: ${{ secrets.KUBE_CONFIG }}
         args: rollout restart deployment/frontend
+    - uses: danielr1996/kubectl-action@1.0.0
+      name: Deploy Backend
+      if: ${{ env.BRANCH == 'main' }}
+      with:
+        kubeconfig: ${{ secrets.KUBE_CONFIG }}
+        args: rollout restart deployment/backend
