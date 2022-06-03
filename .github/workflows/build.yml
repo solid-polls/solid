@@ -29,6 +29,7 @@ jobs:
         tags: ghcr.io/solid-polls/solid/solid-backend:${{ env.BRANCH }}
     - uses: danielr1996/kubectl-action@1.0.0
       name: Deploy
+      if: ${{ env.BRANCH == 'main' }}
       with:
         kubeconfig: ${{ secrets.KUBE_CONFIG }}
         args: rollout restart deployment/frontend
