@@ -29,9 +29,9 @@ function HomePage() {
     <div>
       <h1>Home</h1>
       <div>Please type in the poll code:</div>
-      <input type="text" onChange={(event) => setCode(event.target.value)} />
+      <input type='text' onChange={(event) => setCode(event.target.value)} />
       <Link href={`/poll/${code}`}>
-        <button type="submit">Join Poll</button>
+        <button type='submit'>Join Poll</button>
       </Link>
     </div>
   );
@@ -41,12 +41,12 @@ function App() {
   return (
     <div>
       <div>
-        <Link href="/">SolidPolls</Link>
+        <Link href='/'>SolidPolls</Link>
       </div>
 
       <Switch>
-        <Route path="/poll/:code" component={PollPage} />
-        <Route path="/" component={HomePage} />
+        <Route path='/poll/:code' component={PollPage} />
+        <Route path='/' component={HomePage} />
       </Switch>
     </div>
   );
