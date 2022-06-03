@@ -7,6 +7,8 @@ async function bootstrap() {
 
   if (process.env.NODE_ENV === 'dev') {
     app.enableCors({ origin: 'http://localhost:8000' });
+  } else {
+    app.enableCors({ origin: 'https://app.solidpolls.de' });
   }
 
   const config = new DocumentBuilder()
