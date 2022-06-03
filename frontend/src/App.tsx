@@ -2,6 +2,7 @@ import { defaultApi } from './api';
 import { useQuery } from 'react-query';
 import { Link, Route, Switch } from 'wouter';
 import { useState } from 'react';
+import { Button, Container, Stack, TextField, Typography } from '@mui/material';
 
 type PollPageProps = {
   params: { code: string };
@@ -14,41 +15,58 @@ function PollPage(props: PollPageProps) {
   );
 
   return (
-    <div>
-      <h1>Poll Page</h1>
-      {isLoading && <div>Loading ...</div>}
-      {isSuccess && <div>The poll: {JSON.stringify(data)}</div>}
-      {isError && <div>Could not fetch resource: {JSON.stringify(error)}</div>}
-    </div>
+    <>
+      <Typography variant="h1">Poll Page</Typography>
+      {isLoading && <Typography variant="body1">Loading ...</Typography>}
+      {isSuccess && (
+        <Typography variant="body1">
+          The poll: {JSON.stringify(data)}
+        </Typography>
+      )}
+      {isError && (
+        <Typography variant="body1">
+          Could not fetch resource: {JSON.stringify(error)}
+        </Typography>
+      )}
+    </>
   );
 }
 
 function HomePage() {
   const [code, setCode] = useState('');
   return (
-    <div>
-      <h1>Home</h1>
-      <div>Please type in the poll code:</div>
-      <input type='text' onChange={(event) => setCode(event.target.value)} />
-      <Link href={`/poll/${code}`}>
-        <button type='submit'>Join Poll</button>
-      </Link>
-    </div>
+    <>
+      <Typography variant="h1">Home</Typography>
+      <Typography variant="body1">Please type in the poll code:</Typography>
+      <Stack spacing={1} marginTop={1}>
+        <TextField
+          label="Poll code"
+          type="text"
+          variant="outlined"
+          onChange={(event) => setCode(event.target.value)}
+        />
+        <Link href={`/poll/${code}`}>
+          <Button variant="contained" type="submit">
+            Join Poll
+          </Button>
+        </Link>
+      </Stack>
+    </>
   );
 }
 
 function App() {
   return (
-    <div>
-      <div>
-        <Link href='/'>SolidPolls</Link>
-      </div>
+    <Container maxWidth="sm">
+      {/* <div>
+        <Link href="/">SolidPolls</Link>
+      </div> */}
 
       <Switch>
         <Route path='/poll/:code' component={PollPage} />
         <Route path='/' component={HomePage} />
       </Switch>
-    </div>
+    </Container>
   );
 }
 
