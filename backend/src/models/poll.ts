@@ -13,5 +13,5 @@ export default class Poll {
 
   @ApiProperty()
   @Column()
-  code: number;
+  code: string;
 }

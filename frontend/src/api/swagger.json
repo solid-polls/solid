@@ -1,28 +1,84 @@
 {
   "openapi": "3.0.0",
   "paths": {
-    "/poll": {
+    "/polls": {
+      "post": {
+        "operationId": "PollController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CreatePollDto" }
+            }
+          }
+        },
+        "responses": { "201": { "description": "" } }
+      },
       "get": {
-        "operationId": "AppController_getPoll",
+        "operationId": "PollController_findAll",
+        "parameters": [],
+        "responses": { "200": { "description": "" } }
+      }
+    },
+    "/polls/{pollId}": {
+      "get": {
+        "operationId": "PollController_findOne",
+        "parameters": [
+          {
+            "name": "pollId",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "number" }
+          }
+        ],
+        "responses": { "200": { "description": "" } }
+      },
+      "patch": {
+        "operationId": "PollController_update",
+        "parameters": [
+          {
+            "name": "pollId",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "number" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/UpdatePollDto" }
+            }
+          }
+        },
+        "responses": { "200": { "description": "" } }
+      },
+      "delete": {
+        "operationId": "PollController_remove",
+        "parameters": [
+          {
+            "name": "pollId",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "number" }
+          }
+        ],
+        "responses": { "200": { "description": "" } }
+      }
+    },
+    "/polls/byCode/{code}": {
+      "get": {
+        "operationId": "PollController_findByCode",
         "parameters": [
           {
             "name": "code",
             "required": true,
-            "in": "query",
-            "schema": { "type": "number" }
+            "in": "path",
+            "schema": { "type": "string" }
           }
         ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/Poll" }
-              }
-            }
-          },
-          "404": { "description": "" }
-        }
+        "responses": { "200": { "description": "" } }
       }
     }
   },
@@ -39,14 +95,14 @@
   ],
   "components": {
     "schemas": {
-      "Poll": {
+      "CreatePollDto": {
         "type": "object",
-        "properties": {
-          "id": { "type": "number" },
-          "title": { "type": "string" },
-          "code": { "type": "number" }
-        },
-        "required": ["id", "title", "code"]
+        "properties": { "title": { "type": "string" } },
+        "required": ["title"]
+      },
+      "UpdatePollDto": {
+        "type": "object",
+        "properties": { "title": { "type": "string" } }
       }
     }
   }
