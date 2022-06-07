@@ -47,9 +47,11 @@ export class PollService {
     });
   }
 
-  remove(pollId: number): void {
-    this.connection.transaction(async (manager) => {
-      await manager.delete(Poll, { id: pollId });
+  remove(pollId: number): Promise<boolean> {
+    return this.connection.transaction(async (manager) => {
+      const poll = await manager.findOne(Poll, { id: pollId });
+      await manager.delete(Poll, poll);
+      return poll !== undefined;
     });
   }
 }

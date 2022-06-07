@@ -13,12 +13,35 @@
             }
           }
         },
-        "responses": { "201": { "description": "" } }
+        "responses": {
+          "201": {
+            "description": "The poll has been created",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Poll" }
+              }
+            }
+          }
+        },
+        "tags": ["polls"]
       },
       "get": {
         "operationId": "PollController_findAll",
         "parameters": [],
-        "responses": { "200": { "description": "" } }
+        "responses": {
+          "200": {
+            "description": "Returns all polls of the system",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Poll" }
+                }
+              }
+            }
+          }
+        },
+        "tags": ["polls"]
       }
     },
     "/polls/{pollId}": {
@@ -32,7 +55,18 @@
             "schema": { "type": "number" }
           }
         ],
-        "responses": { "200": { "description": "" } }
+        "responses": {
+          "200": {
+            "description": "Returns the poll with this id",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Poll" }
+              }
+            }
+          },
+          "404": { "description": "No poll with this id has been found" }
+        },
+        "tags": ["polls"]
       },
       "patch": {
         "operationId": "PollController_update",
@@ -52,7 +86,18 @@
             }
           }
         },
-        "responses": { "200": { "description": "" } }
+        "responses": {
+          "200": {
+            "description": "Updates the poll with this id and returns it",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Poll" }
+              }
+            }
+          },
+          "404": { "description": "No poll with this id has been found" }
+        },
+        "tags": ["polls"]
       },
       "delete": {
         "operationId": "PollController_remove",
@@ -64,7 +109,11 @@
             "schema": { "type": "number" }
           }
         ],
-        "responses": { "200": { "description": "" } }
+        "responses": {
+          "200": { "description": "The poll has been deleted" },
+          "404": { "description": "The poll has not been found" }
+        },
+        "tags": ["polls"]
       }
     },
     "/polls/byCode/{code}": {
@@ -78,7 +127,18 @@
             "schema": { "type": "string" }
           }
         ],
-        "responses": { "200": { "description": "" } }
+        "responses": {
+          "200": {
+            "description": "Returns the poll with this code",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Poll" }
+              }
+            }
+          },
+          "404": { "description": "No poll with this code has been found" }
+        },
+        "tags": ["polls"]
       }
     }
   },
@@ -99,6 +159,15 @@
         "type": "object",
         "properties": { "title": { "type": "string" } },
         "required": ["title"]
+      },
+      "Poll": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "number" },
+          "title": { "type": "string" },
+          "code": { "type": "string" }
+        },
+        "required": ["id", "title", "code"]
       },
       "UpdatePollDto": {
         "type": "object",
