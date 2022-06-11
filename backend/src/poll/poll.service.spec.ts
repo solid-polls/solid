@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { PollModule } from './poll.module';
+import { Repository } from 'typeorm';
 import { PollService } from './poll.service';
 
 describe('PollService', () => {
@@ -7,8 +7,13 @@ describe('PollService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [PollModule],
-      providers: [PollService],
+      providers: [
+        PollService,
+        {
+          provide: 'PollRepository',
+          useClass: Repository,
+        },
+      ],
     }).compile();
 
     service = module.get<PollService>(PollService);
