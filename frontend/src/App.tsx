@@ -1,4 +1,4 @@
-import { defaultApi } from './api';
+import { pollsApi } from './api';
 import { useQuery } from 'react-query';
 import { Link, Route, Switch } from 'wouter';
 import { useState } from 'react';
@@ -11,7 +11,7 @@ type PollPageProps = {
 function PollPage(props: PollPageProps) {
   const { isLoading, isSuccess, isError, data, error } = useQuery(
     ['poll', props.params.code],
-    () => defaultApi.appControllerGetPoll({ code: +props.params.code }),
+    () => pollsApi.pollControllerFindByCode({ code: props.params.code }),
   );
 
   return (

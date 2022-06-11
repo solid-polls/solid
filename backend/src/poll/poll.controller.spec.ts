@@ -1,20 +1,22 @@
-// import { Test, TestingModule } from '@nestjs/testing';
-// import { PollController } from './poll.controller';
-// import { PollService } from './poll.service';
+import { Test, TestingModule } from '@nestjs/testing';
+import { PollController } from './poll.controller';
+import { PollModule } from './poll.module';
+import { PollService } from './poll.service';
 
-// describe('PollController', () => {
-//   let controller: PollController;
+describe('PollController', () => {
+  let controller: PollController;
 
-//   beforeEach(async () => {
-//     const module: TestingModule = await Test.createTestingModule({
-//       controllers: [PollController],
-//       providers: [PollService],
-//     }).compile();
+  beforeEach(async () => {
+    const module: TestingModule = await Test.createTestingModule({
+      imports: [PollModule],
+      controllers: [PollController],
+      providers: [PollService],
+    }).compile();
 
-//     controller = module.get<PollController>(PollController);
-//   });
+    controller = module.get<PollController>(PollController);
+  });
 
-//   it('should be defined', () => {
-//     expect(controller).toBeDefined();
-//   });
-// });
+  it('should be defined', () => {
+    expect(controller).toBeDefined();
+  });
+});

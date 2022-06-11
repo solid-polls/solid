@@ -1,4 +1,4 @@
-import { Configuration, DefaultApi } from '../client';
+import { Configuration, PollsApi } from '../client';
 
 function getBasePath() {
   if (import.meta.env.DEV) {
@@ -11,4 +11,4 @@ const configuration = new Configuration({
   basePath: getBasePath(),
 });
 
-export const defaultApi = new DefaultApi(configuration);
+export const pollsApi = new PollsApi(configuration);
