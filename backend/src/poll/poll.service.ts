@@ -1,57 +1,52 @@
 import { Injectable } from '@nestjs/common';
 import Poll from '../models/poll';
-import { Connection } from 'typeorm';
+import { Repository } from 'typeorm';
 import { CreatePollDto } from './dto/create-poll.dto';
 import { UpdatePollDto } from './dto/update-poll.dto';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class PollService {
-  constructor(private connection: Connection) {}
+  constructor(
+    @InjectRepository(Poll)
+    private pollRepository: Repository<Poll>,
+  ) {}
 
-  create(createPollDto: CreatePollDto): Promise<Poll> {
-    return this.connection.transaction(async (manager) => {
-      const poll = manager.create(Poll, createPollDto);
-      poll.code = Math.random().toString(10).slice(2, 5);
-      return await manager.save(poll);
-    });
+  async create(createPollDto: CreatePollDto): Promise<Poll> {
+    const poll = this.pollRepository.create(createPollDto);
+    poll.code = Math.random().toString(10).slice(2, 5);
+    return await this.pollRepository.save(poll);
   }
 
   findAll(): Promise<Poll[]> {
-    return this.connection.transaction(async (manager) => {
-      return manager.find(Poll);
-    });
+    return this.pollRepository.find();
   }
 
   findOne(pollId: number): Promise<Poll | null> {
-    return this.connection.transaction(async (manager) => {
-      return manager.findOne(Poll, { where: { id: pollId } });
-    });
+    return this.pollRepository.findOne({ where: { id: pollId } });
   }
 
-  findOneByCode(code: string): Promise<Poll | null> {
-    return this.connection.transaction(async (manager) => {
-      const polls = await manager.find(Poll, { where: { code } });
-      if (polls.length == 0) {
-        return null;
-      }
+  async findOneByCode(code: string): Promise<Poll | null> {
+    const polls = await this.pollRepository.find({ where: { code } });
+    if (polls.length == 0) {
+      return null;
+    }
 
-      return polls[0];
-    });
+    return polls[0];
   }
 
-  update(pollId: number, updatePollDto: UpdatePollDto): Promise<Poll | null> {
-    return this.connection.transaction(async (manager) => {
-      const poll = await manager.findOne(Poll, { where: { id: pollId } });
-      manager.merge(Poll, poll, updatePollDto);
-      return await manager.save(poll);
-    });
+  async update(
+    pollId: number,
+    updatePollDto: UpdatePollDto,
+  ): Promise<Poll | null> {
+    const poll = await this.pollRepository.findOne({ where: { id: pollId } });
+    this.pollRepository.merge(poll, updatePollDto);
+    return await this.pollRepository.save(poll);
   }
 
-  remove(pollId: number): Promise<boolean> {
-    return this.connection.transaction(async (manager) => {
-      const poll = await manager.findOne(Poll, { id: pollId });
-      await manager.delete(Poll, poll);
-      return poll !== undefined;
-    });
+  async remove(pollId: number): Promise<boolean> {
+    const poll = await this.pollRepository.findOne({ id: pollId });
+    await this.pollRepository.delete(poll);
+    return poll !== undefined;
   }
 }
