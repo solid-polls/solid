@@ -14,7 +14,9 @@ export class PollService {
 
   async create(createPollDto: CreatePollDto): Promise<Poll> {
     const poll = this.pollRepository.create(createPollDto);
-    poll.code = Math.random().toString(10).slice(2, 5);
+    do {
+      poll.code = Math.random().toString(10).slice(2, 7);
+    } while (await this.pollRepository.findOne({ where: { code: poll.code } }));
     return await this.pollRepository.save(poll);
   }
 
