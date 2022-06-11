@@ -12,6 +12,7 @@ import {
 } from '@nestjs/common';
 import {
   ApiCreatedResponse,
+  ApiNoContentResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiTags,
@@ -105,7 +106,7 @@ export class PollController {
 
   @Delete(':pollId')
   @HttpCode(204)
-  @ApiOkResponse({ description: 'The poll has been deleted' })
+  @ApiNoContentResponse({ description: 'The poll has been deleted' })
   @ApiNotFoundResponse({ description: 'The poll has not been found' })
   async remove(
     @Param('pollId') pollId: number,
