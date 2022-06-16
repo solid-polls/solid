@@ -5,19 +5,29 @@ import {
 } from '@nestjs/websockets';
 import { Server } from 'socket.io';
 
+interface UpdatePayload {
+  votes: number;
+}
+
+interface ServerToClientEvents {
+  update: (payload: UpdatePayload) => void;
+}
+
 interface VotePayload {
-  pollCode: number;
+  pollCode: string;
   questionID: number;
   answerID: number;
 }
 
-interface UpdatePayload {
-  questions: [{ id: number; votes: number }];
+interface ClientToServerEvents {
+  vote: (payload: VotePayload) => void;
 }
+
+export type VoteServer = Server<ClientToServerEvents, ServerToClientEvents>;
 
 @WebSocketGateway()
 export class VoteGateway {
-  @WebSocketServer() server: Server;
+  @WebSocketServer() server: VoteServer;
   private votes = 0;
 
   @SubscribeMessage('vote')
