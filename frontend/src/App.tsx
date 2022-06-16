@@ -3,34 +3,7 @@ import { useQuery } from 'react-query';
 import { Link, Route, Switch } from 'wouter';
 import { useState } from 'react';
 import { Button, Container, Stack, TextField, Typography } from '@mui/material';
-
-type PollPageProps = {
-  params: { code: string };
-};
-
-function PollPage(props: PollPageProps) {
-  const { isLoading, isSuccess, isError, data, error } = useQuery(
-    ['poll', props.params.code],
-    () => pollsApi.pollControllerFindByCode({ code: props.params.code }),
-  );
-
-  return (
-    <>
-      <Typography variant='h1'>Poll Page</Typography>
-      {isLoading && <Typography variant='body1'>Loading ...</Typography>}
-      {isSuccess && (
-        <Typography variant='body1'>
-          The poll: {JSON.stringify(data)}
-        </Typography>
-      )}
-      {isError && (
-        <Typography variant='body1'>
-          Could not fetch resource: {JSON.stringify(error)}
-        </Typography>
-      )}
-    </>
-  );
-}
+import PollPage from "./PollPage";
 
 function HomePage() {
   const [code, setCode] = useState('');
