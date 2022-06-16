@@ -23,6 +23,6 @@ export class VoteGateway {
   @SubscribeMessage('vote')
   handleMessage(client: any, payload: VotePayload): void {
     this.votes++;
-    this.server.emit('update', { questions: { id: 1, votes: this.votes } });
+    this.server.emit('update', { votes: this.votes });
   }
 }

@@ -1,6 +1,6 @@
 import { useQuery } from 'react-query';
 import { pollsApi } from './api';
-import { Button, Typography } from '@mui/material';
+import { Button, Stack, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { Socket, io } from 'socket.io-client';
 import { Poll } from './client';
@@ -51,23 +51,17 @@ function useVoteClient(pollCode: string): VoteClient | null {
 interface QuestionResultsProps {
   poll: Poll;
   questionIndex: number;
-  voteClient: VoteClient;
+  numVotes: number;
 }
 
 function QuestionResults(props: QuestionResultsProps) {
-  useEffect(() => {
-    props.voteClient.on('update', (payload) => {
-      console.log(payload);
-    });
-    return () => {
-      props.voteClient.removeListener('update');
-    };
-  }, [props.voteClient]);
-
   return (
-    <Typography variant='body1'>
-      The poll: {JSON.stringify(props.poll)}
-    </Typography>
+    <Stack>
+      <Typography variant='body1'>
+        The poll: {JSON.stringify(props.poll)}
+      </Typography>
+      <Typography variant='body1'>Votes: {props.numVotes}</Typography>
+    </Stack>
   );
 }
 
@@ -94,6 +88,18 @@ export default function PollPage(props: PollPageProps) {
   const voteClient = useVoteClient(props.params.code);
   const [questionIndex, setQuestionIndex] = useState(0);
   const [voted, setVoted] = useState<Set<number>>(new Set());
+  const [numVotes, setNumVotes] = useState(0);
+  useEffect(() => {
+    if (!voteClient) {
+      return;
+    }
+    voteClient.on('update', (payload) => {
+      setNumVotes(payload.votes);
+    });
+    return () => {
+      voteClient.removeListener('update');
+    };
+  }, [voteClient]);
 
   return (
     <>
@@ -105,8 +111,8 @@ export default function PollPage(props: PollPageProps) {
         (voted.has(questionIndex) ? (
           <QuestionResults
             poll={data}
-            voteClient={voteClient}
             questionIndex={questionIndex}
+            numVotes={numVotes}
           />
         ) : (
           <QuestionVoter
