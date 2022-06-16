@@ -7,7 +7,7 @@
     "postgres": "docker run -p 5432:5432 -e POSTGRES_USER=solid -e POSTGRES_PASSWORD=solid postgres:14-alpine",
     "setup": "npm install && cd frontend && npm install && cd ../backend && npm install",
     "precommit": "concurrently \"cd backend && npm run test && npm run lint\" \"cd frontend && npm run lint\"",
-    "codegen:full": "curl http://localhost:3000/docs-json > frontend/src/api/swagger.json && cd backend && npx prettier --write ../frontend/src/api/swagger.json && cd ../frontend && npm run codegen"
+    "codegen:full": "cp backend/src/types/* frontend/src/types/ && curl http://localhost:3000/docs-json > frontend/src/api/swagger.json && cd backend && npx prettier --write ../frontend/src/api/swagger.json && cd ../frontend && npm run codegen"
   },
   "repository": {
     "type": "git",
