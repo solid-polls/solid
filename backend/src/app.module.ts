@@ -6,7 +6,12 @@ import { QuestionModule } from './question/question.module';
 import { AnswerModule } from './answer/answer.module';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(options), PollModule, QuestionModule, AnswerModule],
+  imports: [
+    TypeOrmModule.forRoot(options),
+    PollModule,
+    QuestionModule,
+    AnswerModule,
+  ],
   controllers: [],
   providers: [],
 })

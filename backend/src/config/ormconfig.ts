@@ -10,6 +10,6 @@ const options: TypeOrmModuleOptions = {
   database: process.env.DB_DATABASE ?? 'solid',
   entities: [path.join(__dirname, '..', 'models', '**', '*{.ts,.js}')],
   migrations: [path.join(__dirname, '..', 'migrations', '**', '*{.ts,.js}')],
-  migrationsRun: true,
+  synchronize: true,
 };
 export default options;

@@ -12,9 +12,10 @@ export default class Answer {
   @Column()
   text: string;
 
+  // eslint-disable-next-line @typescript-eslint/no-inferrable-types
   @ApiProperty()
   @Column()
-  count: number;
+  count: number = 0;
 
   @ManyToOne(() => Question, (question) => question.answers)
   question: Question;
