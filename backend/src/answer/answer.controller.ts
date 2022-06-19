@@ -134,8 +134,7 @@ export class AnswerController {
   }
 
   @Delete(':answerId')
-  @HttpCode(204)
-  @ApiNoContentResponse({ description: 'Deletes the answer and returns it' })
+  @ApiOkResponse({ description: 'Deletes the answer and returns it' })
   @ApiNotFoundResponse({
     description: 'No poll, question or answer with the given id has been found',
   })
