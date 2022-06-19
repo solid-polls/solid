@@ -8,6 +8,6 @@ import Poll from '../models/poll';
   imports: [TypeOrmModule.forFeature([Poll])],
   controllers: [PollController],
   providers: [PollService],
-  exports: [TypeOrmModule],
+  exports: [PollService],
 })
 export class PollModule {}

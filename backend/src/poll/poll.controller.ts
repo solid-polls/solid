@@ -2,7 +2,6 @@ import {
   Body,
   Controller,
   Delete,
-  ForbiddenException,
   Get,
   HttpCode,
   HttpStatus,
@@ -30,7 +29,10 @@ export class PollController {
   constructor(private readonly pollService: PollService) {}
 
   @Post()
-  @ApiCreatedResponse({ type: Poll, description: 'The poll has been created' })
+  @ApiCreatedResponse({
+    type: Poll,
+    description: 'Creates the poll and returns it',
+  })
   async create(@Body() createPollDto: CreatePollDto): Promise<Poll> {
     return await this.pollService.create(createPollDto);
   }
@@ -57,7 +59,6 @@ export class PollController {
     const poll = await this.pollService.findOne(pollId);
     if (!poll) {
       res.status(HttpStatus.NOT_FOUND);
-      return;
     }
 
     return poll;
@@ -76,7 +77,6 @@ export class PollController {
     const poll = await this.pollService.findOneByCode(code);
     if (!poll) {
       res.status(HttpStatus.NOT_FOUND);
-      return;
     }
 
     return poll;
@@ -99,23 +99,23 @@ export class PollController {
     const poll = await this.pollService.update(pollId, updatePollDto);
     if (!poll) {
       res.status(HttpStatus.NOT_FOUND);
-      return;
     }
 
     return poll;
   }
 
   @Delete(':pollId')
-  @HttpCode(204)
-  @ApiNoContentResponse({ description: 'The poll has been deleted' })
-  @ApiNotFoundResponse({ description: 'The poll has not been found' })
+  @ApiOkResponse({ description: 'Deletes the poll and returns it' })
+  @ApiNotFoundResponse({ description: 'No poll with this id has been found' })
   async remove(
     @Param('pollId') pollId: number,
     @Res({ passthrough: true }) res: Response,
-  ): Promise<void> {
-    const removed = await this.pollService.remove(pollId);
-    if (!removed) {
+  ): Promise<Poll | null> {
+    const poll = await this.pollService.remove(pollId);
+    if (!poll) {
       res.status(HttpStatus.NOT_FOUND);
     }
+
+    return poll;
   }
 }

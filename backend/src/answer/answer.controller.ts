@@ -6,37 +6,154 @@ import {
   Patch,
   Param,
   Delete,
+  Res,
+  HttpStatus,
+  HttpCode,
 } from '@nestjs/common';
+import {
+  ApiCreatedResponse,
+  ApiNoContentResponse,
+  ApiNotFoundResponse,
+  ApiOkResponse,
+  ApiTags,
+} from '@nestjs/swagger';
+import Answer from 'src/models/answer';
 import { AnswerService } from './answer.service';
 import { CreateAnswerDto } from './dto/create-answer.dto';
 import { UpdateAnswerDto } from './dto/update-answer.dto';
+import { Response } from 'express';
 
-@Controller('answer')
+@ApiTags('answers')
+@Controller('polls/:pollId/questions/:questionId/answers')
 export class AnswerController {
   constructor(private readonly answerService: AnswerService) {}
 
   @Post()
-  create(@Body() createAnswerDto: CreateAnswerDto) {
-    return this.answerService.create(createAnswerDto);
+  @ApiCreatedResponse({
+    type: Answer,
+    description: 'Creates the answer and returns it',
+  })
+  @ApiNotFoundResponse({
+    type: null,
+    description: 'No poll or question with the given id has been found',
+  })
+  async create(
+    @Param('pollId') pollId: number,
+    @Param('questionId') questionId: number,
+    @Body() createAnswerDto: CreateAnswerDto,
+    @Res({ passthrough: true }) res: Response,
+  ): Promise<Answer | null> {
+    const answer = await this.answerService.create(
+      pollId,
+      questionId,
+      createAnswerDto,
+    );
+    if (!answer) {
+      res.status(HttpStatus.NOT_FOUND);
+    }
+
+    return answer;
   }
 
   @Get()
-  findAll() {
-    return this.answerService.findAll();
+  @ApiOkResponse({
+    type: [Answer],
+    description: 'Returns all answers of this poll',
+  })
+  @ApiNotFoundResponse({
+    type: null,
+    description: 'No poll or question with the given id has been found',
+  })
+  async findAll(
+    @Param('pollId') pollId: number,
+    @Param('questionId') questionId: number,
+    @Res({ passthrough: true }) res: Response,
+  ): Promise<Answer[] | null> {
+    const answers = await this.answerService.findAll(pollId, questionId);
+    if (!answers) {
+      res.status(HttpStatus.NOT_FOUND);
+    }
+
+    return answers;
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.answerService.findOne(+id);
+  @Get(':answerId')
+  @ApiOkResponse({
+    type: [Answer],
+    description: 'Returns the answers with this id',
+  })
+  @ApiNotFoundResponse({
+    type: null,
+    description: 'No poll, question or answer with the given id has been found',
+  })
+  async findOne(
+    @Param('pollId') pollId: number,
+    @Param('questionId') questionId: number,
+    @Param('answerId') answerId: number,
+    @Res({ passthrough: true }) res: Response,
+  ): Promise<Answer | null> {
+    const answer = await this.answerService.findOne(
+      pollId,
+      questionId,
+      answerId,
+    );
+    if (!answer) {
+      res.status(HttpStatus.NOT_FOUND);
+    }
+
+    return answer;
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateAnswerDto: UpdateAnswerDto) {
-    return this.answerService.update(+id, updateAnswerDto);
+  @Patch(':answerId')
+  @ApiOkResponse({
+    type: [Answer],
+    description: 'Updates the answer with this id and returns it',
+  })
+  @ApiNotFoundResponse({
+    type: null,
+    description: 'No poll, question or answer with the given id has been found',
+  })
+  async update(
+    @Param('pollId') pollId: number,
+    @Param('questionId') questionId: number,
+    @Param('answerId') answerId: number,
+    @Body() updateAnswerDto: UpdateAnswerDto,
+    @Res({ passthrough: true }) res: Response,
+  ): Promise<Answer | null> {
+    const answer = await this.answerService.update(
+      pollId,
+      questionId,
+      answerId,
+      updateAnswerDto,
+    );
+    if (!answer) {
+      res.status(HttpStatus.NOT_FOUND);
+    }
+
+    return answer;
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.answerService.remove(+id);
+  @Delete(':answerId')
+  @HttpCode(204)
+  @ApiNoContentResponse({ description: 'Deletes the answer and returns it' })
+  @ApiNotFoundResponse({
+    description: 'No poll, question or answer with the given id has been found',
+  })
+  async remove(
+    @Param('pollId') pollId: number,
+    @Param('questionId') questionId: number,
+    @Param('answerId') answerId: number,
+    @Res({ passthrough: true }) res: Response,
+  ): Promise<Answer | null> {
+    const answer = await this.answerService.remove(
+      pollId,
+      questionId,
+      answerId,
+    );
+    if (!answer) {
+      res.status(HttpStatus.NOT_FOUND);
+    }
+
+    return answer;
   }
 }
