@@ -8,11 +8,9 @@ import {
   Delete,
   Res,
   HttpStatus,
-  HttpCode,
 } from '@nestjs/common';
 import {
   ApiCreatedResponse,
-  ApiNoContentResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiTags,
@@ -50,6 +48,7 @@ export class AnswerController {
     );
     if (!answer) {
       res.status(HttpStatus.NOT_FOUND);
+      return;
     }
 
     return answer;
@@ -72,6 +71,7 @@ export class AnswerController {
     const answers = await this.answerService.findAll(pollId, questionId);
     if (!answers) {
       res.status(HttpStatus.NOT_FOUND);
+      return;
     }
 
     return answers;
@@ -99,6 +99,7 @@ export class AnswerController {
     );
     if (!answer) {
       res.status(HttpStatus.NOT_FOUND);
+      return;
     }
 
     return answer;
@@ -128,6 +129,7 @@ export class AnswerController {
     );
     if (!answer) {
       res.status(HttpStatus.NOT_FOUND);
+      return;
     }
 
     return answer;
@@ -151,6 +153,7 @@ export class AnswerController {
     );
     if (!answer) {
       res.status(HttpStatus.NOT_FOUND);
+      return;
     }
 
     return answer;

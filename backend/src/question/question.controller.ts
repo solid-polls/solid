@@ -3,7 +3,6 @@ import {
   Controller,
   Delete,
   Get,
-  HttpCode,
   HttpStatus,
   Param,
   Patch,
@@ -12,7 +11,6 @@ import {
 } from '@nestjs/common';
 import {
   ApiCreatedResponse,
-  ApiNoContentResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiTags,
@@ -48,6 +46,7 @@ export class QuestionController {
     );
     if (!question) {
       res.status(HttpStatus.NOT_FOUND);
+      return;
     }
 
     return question;
@@ -69,6 +68,7 @@ export class QuestionController {
     const polls = await this.questionService.findAll(pollId);
     if (!polls) {
       res.status(HttpStatus.NOT_FOUND);
+      return;
     }
 
     return polls;
@@ -91,6 +91,7 @@ export class QuestionController {
     const question = await this.questionService.findOne(pollId, questionId);
     if (!question) {
       res.status(HttpStatus.NOT_FOUND);
+      return;
     }
 
     return question;
@@ -118,6 +119,7 @@ export class QuestionController {
     );
     if (!question) {
       res.status(HttpStatus.NOT_FOUND);
+      return;
     }
 
     return question;
@@ -136,6 +138,7 @@ export class QuestionController {
     const question = await this.questionService.remove(pollId, questionId);
     if (!question) {
       res.status(HttpStatus.NOT_FOUND);
+      return;
     }
 
     return question;

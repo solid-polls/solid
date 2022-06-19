@@ -3,7 +3,6 @@ import {
   Controller,
   Delete,
   Get,
-  HttpCode,
   HttpStatus,
   Param,
   Patch,
@@ -12,7 +11,6 @@ import {
 } from '@nestjs/common';
 import {
   ApiCreatedResponse,
-  ApiNoContentResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiTags,
@@ -59,6 +57,7 @@ export class PollController {
     const poll = await this.pollService.findOne(pollId);
     if (!poll) {
       res.status(HttpStatus.NOT_FOUND);
+      return;
     }
 
     return poll;
@@ -77,6 +76,7 @@ export class PollController {
     const poll = await this.pollService.findOneByCode(code);
     if (!poll) {
       res.status(HttpStatus.NOT_FOUND);
+      return;
     }
 
     return poll;
@@ -99,6 +99,7 @@ export class PollController {
     const poll = await this.pollService.update(pollId, updatePollDto);
     if (!poll) {
       res.status(HttpStatus.NOT_FOUND);
+      return;
     }
 
     return poll;
@@ -114,6 +115,7 @@ export class PollController {
     const poll = await this.pollService.remove(pollId);
     if (!poll) {
       res.status(HttpStatus.NOT_FOUND);
+      return;
     }
 
     return poll;
