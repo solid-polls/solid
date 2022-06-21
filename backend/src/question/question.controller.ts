@@ -97,50 +97,50 @@ export class QuestionController {
     return question;
   }
 
-  @Patch(':questionId')
-  @ApiOkResponse({
-    type: Question,
-    description: 'Updates the question with this id and returns it',
-  })
-  @ApiNotFoundResponse({
-    type: null,
-    description: 'No poll ot question with the given id has been found',
-  })
-  async update(
-    @Param('pollId') pollId: number,
-    @Param('questionId') questionId: number,
-    @Body() updateQuestionDto: UpdateQuestionDto,
-    @Res({ passthrough: true }) res: Response,
-  ): Promise<Question | null> {
-    const question = await this.questionService.update(
-      pollId,
-      questionId,
-      updateQuestionDto,
-    );
-    if (!question) {
-      res.status(HttpStatus.NOT_FOUND);
-      return;
-    }
+  // @Patch(':questionId')
+  // @ApiOkResponse({
+  //   type: Question,
+  //   description: 'Updates the question with this id and returns it',
+  // })
+  // @ApiNotFoundResponse({
+  //   type: null,
+  //   description: 'No poll ot question with the given id has been found',
+  // })
+  // async update(
+  //   @Param('pollId') pollId: number,
+  //   @Param('questionId') questionId: number,
+  //   @Body() updateQuestionDto: UpdateQuestionDto,
+  //   @Res({ passthrough: true }) res: Response,
+  // ): Promise<Question | null> {
+  //   const question = await this.questionService.update(
+  //     pollId,
+  //     questionId,
+  //     updateQuestionDto,
+  //   );
+  //   if (!question) {
+  //     res.status(HttpStatus.NOT_FOUND);
+  //     return;
+  //   }
 
-    return question;
-  }
+  //   return question;
+  // }
 
-  @Delete(':questionId')
-  @ApiOkResponse({ description: 'Deletes the question and returns it' })
-  @ApiNotFoundResponse({
-    description: 'The poll or question with this id has been found',
-  })
-  async remove(
-    @Param('pollId') pollId: number,
-    @Param('questionId') questionId: number,
-    @Res({ passthrough: true }) res: Response,
-  ): Promise<Question | null> {
-    const question = await this.questionService.remove(pollId, questionId);
-    if (!question) {
-      res.status(HttpStatus.NOT_FOUND);
-      return;
-    }
+  // @Delete(':questionId')
+  // @ApiOkResponse({ description: 'Deletes the question and returns it' })
+  // @ApiNotFoundResponse({
+  //   description: 'The poll or question with this id has been found',
+  // })
+  // async remove(
+  //   @Param('pollId') pollId: number,
+  //   @Param('questionId') questionId: number,
+  //   @Res({ passthrough: true }) res: Response,
+  // ): Promise<Question | null> {
+  //   const question = await this.questionService.remove(pollId, questionId);
+  //   if (!question) {
+  //     res.status(HttpStatus.NOT_FOUND);
+  //     return;
+  //   }
 
-    return question;
-  }
+  //   return question;
+  // }
 }

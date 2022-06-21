@@ -82,42 +82,42 @@ export class PollController {
     return poll;
   }
 
-  @Patch(':pollId')
-  @ApiOkResponse({
-    type: Poll,
-    description: 'Updates the poll with this id and returns it',
-  })
-  @ApiNotFoundResponse({
-    type: null,
-    description: 'No poll with this id has been found',
-  })
-  async update(
-    @Param('pollId') pollId: number,
-    @Body() updatePollDto: UpdatePollDto,
-    @Res({ passthrough: true }) res: Response,
-  ): Promise<Poll | void> {
-    const poll = await this.pollService.update(pollId, updatePollDto);
-    if (!poll) {
-      res.status(HttpStatus.NOT_FOUND);
-      return;
-    }
+  // @Patch(':pollId')
+  // @ApiOkResponse({
+  //   type: Poll,
+  //   description: 'Updates the poll with this id and returns it',
+  // })
+  // @ApiNotFoundResponse({
+  //   type: null,
+  //   description: 'No poll with this id has been found',
+  // })
+  // async update(
+  //   @Param('pollId') pollId: number,
+  //   @Body() updatePollDto: UpdatePollDto,
+  //   @Res({ passthrough: true }) res: Response,
+  // ): Promise<Poll | void> {
+  //   const poll = await this.pollService.update(pollId, updatePollDto);
+  //   if (!poll) {
+  //     res.status(HttpStatus.NOT_FOUND);
+  //     return;
+  //   }
 
-    return poll;
-  }
+  //   return poll;
+  // }
 
-  @Delete(':pollId')
-  @ApiOkResponse({ description: 'Deletes the poll and returns it' })
-  @ApiNotFoundResponse({ description: 'No poll with this id has been found' })
-  async remove(
-    @Param('pollId') pollId: number,
-    @Res({ passthrough: true }) res: Response,
-  ): Promise<Poll | null> {
-    const poll = await this.pollService.remove(pollId);
-    if (!poll) {
-      res.status(HttpStatus.NOT_FOUND);
-      return;
-    }
+  // @Delete(':pollId')
+  // @ApiOkResponse({ description: 'Deletes the poll and returns it' })
+  // @ApiNotFoundResponse({ description: 'No poll with this id has been found' })
+  // async remove(
+  //   @Param('pollId') pollId: number,
+  //   @Res({ passthrough: true }) res: Response,
+  // ): Promise<Poll | null> {
+  //   const poll = await this.pollService.remove(pollId);
+  //   if (!poll) {
+  //     res.status(HttpStatus.NOT_FOUND);
+  //     return;
+  //   }
 
-    return poll;
-  }
+  //   return poll;
+  // }
 }

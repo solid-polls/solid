@@ -22,7 +22,7 @@ export class QuestionService {
   ): Promise<Question | null> {
     const question = this.questionRepository.create(createQuestionDto);
 
-    const poll = await this.pollService.addQuestionToPoll(pollId, question);
+    const poll = await this.pollService.findOne(pollId);
     if (!poll) return;
 
     question.poll = poll;
@@ -44,36 +44,36 @@ export class QuestionService {
     return this.questionRepository.findOne({ where: { poll, id: questionId } });
   }
 
-  async update(
-    pollId: number,
-    questionId: number,
-    updateQuestionDto: UpdateQuestionDto,
-  ): Promise<Question | null> {
-    const question = await this.findOne(pollId, questionId);
-    if (!question) return;
+  // async update(
+  //   pollId: number,
+  //   questionId: number,
+  //   updateQuestionDto: UpdateQuestionDto,
+  // ): Promise<Question | null> {
+  //   const question = await this.findOne(pollId, questionId);
+  //   if (!question) return;
 
-    this.questionRepository.merge(question, updateQuestionDto);
-    return await this.questionRepository.save(question);
-  }
+  //   this.questionRepository.merge(question, updateQuestionDto);
+  //   return await this.questionRepository.save(question);
+  // }
 
-  async remove(pollId: number, questionId: number): Promise<Question | null> {
-    const question = await this.findOne(pollId, questionId);
-    if (!question) return;
+  // async remove(pollId: number, questionId: number): Promise<Question | null> {
+  //   const question = await this.findOne(pollId, questionId);
+  //   if (!question) return;
 
-    await this.questionRepository.delete(question);
-    return question;
-  }
+  //   await this.questionRepository.delete(question);
+  //   return question;
+  // }
 
-  async addAnswerToQuestion(
-    pollId: number,
-    questionId: number,
-    answer: Answer,
-  ): Promise<Question | null> {
-    const question = await this.findOne(pollId, questionId);
-    if (!question) return;
+  // async addAnswerToQuestion(
+  //   pollId: number,
+  //   questionId: number,
+  //   answer: Answer,
+  // ): Promise<Question | null> {
+  //   const question = await this.findOne(pollId, questionId);
+  //   if (!question) return;
 
-    question.answers.push(answer);
+  //   question.answers.push(answer);
 
-    return await this.questionRepository.save(question);
-  }
+  //   return await this.questionRepository.save(question);
+  // }
 }

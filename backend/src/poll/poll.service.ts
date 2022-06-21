@@ -36,34 +36,34 @@ export class PollService {
     return polls[0];
   }
 
-  async update(
-    pollId: number,
-    updatePollDto: UpdatePollDto,
-  ): Promise<Poll | null> {
-    const poll = await this.findOne(pollId);
-    if (!poll) return;
+  // async update(
+  //   pollId: number,
+  //   updatePollDto: UpdatePollDto,
+  // ): Promise<Poll | null> {
+  //   const poll = await this.findOne(pollId);
+  //   if (!poll) return;
 
-    this.pollRepository.merge(poll, updatePollDto);
-    return await this.pollRepository.save(poll);
-  }
+  //   this.pollRepository.merge(poll, updatePollDto);
+  //   return await this.pollRepository.save(poll);
+  // }
 
-  async remove(pollId: number): Promise<Poll | null> {
-    const poll = await this.findOne(pollId);
-    if (!poll) return;
+  // async remove(pollId: number): Promise<Poll | null> {
+  //   const poll = await this.findOne(pollId);
+  //   if (!poll) return;
 
-    await this.pollRepository.delete(poll);
-    return poll;
-  }
+  //   await this.pollRepository.delete(poll);
+  //   return poll;
+  // }
 
-  async addQuestionToPoll(
-    pollId: number,
-    question: Question,
-  ): Promise<Poll | null> {
-    const poll = await this.findOne(pollId);
-    if (!poll) return;
+  // async addQuestionToPoll(
+  //   pollId: number,
+  //   question: Question,
+  // ): Promise<Poll | null> {
+  //   const poll = await this.findOne(pollId);
+  //   if (!poll) return;
 
-    poll.questions.push(question);
+  //   poll.questions.push(question);
 
-    return await this.pollRepository.save(poll);
-  }
+  //   return await this.pollRepository.save(poll);
+  // }
 }

@@ -105,57 +105,57 @@ export class AnswerController {
     return answer;
   }
 
-  @Patch(':answerId')
-  @ApiOkResponse({
-    type: [Answer],
-    description: 'Updates the answer with this id and returns it',
-  })
-  @ApiNotFoundResponse({
-    type: null,
-    description: 'No poll, question or answer with the given id has been found',
-  })
-  async update(
-    @Param('pollId') pollId: number,
-    @Param('questionId') questionId: number,
-    @Param('answerId') answerId: number,
-    @Body() updateAnswerDto: UpdateAnswerDto,
-    @Res({ passthrough: true }) res: Response,
-  ): Promise<Answer | null> {
-    const answer = await this.answerService.update(
-      pollId,
-      questionId,
-      answerId,
-      updateAnswerDto,
-    );
-    if (!answer) {
-      res.status(HttpStatus.NOT_FOUND);
-      return;
-    }
+  // @Patch(':answerId')
+  // @ApiOkResponse({
+  //   type: [Answer],
+  //   description: 'Updates the answer with this id and returns it',
+  // })
+  // @ApiNotFoundResponse({
+  //   type: null,
+  //   description: 'No poll, question or answer with the given id has been found',
+  // })
+  // async update(
+  //   @Param('pollId') pollId: number,
+  //   @Param('questionId') questionId: number,
+  //   @Param('answerId') answerId: number,
+  //   @Body() updateAnswerDto: UpdateAnswerDto,
+  //   @Res({ passthrough: true }) res: Response,
+  // ): Promise<Answer | null> {
+  //   const answer = await this.answerService.update(
+  //     pollId,
+  //     questionId,
+  //     answerId,
+  //     updateAnswerDto,
+  //   );
+  //   if (!answer) {
+  //     res.status(HttpStatus.NOT_FOUND);
+  //     return;
+  //   }
 
-    return answer;
-  }
+  //   return answer;
+  // }
 
-  @Delete(':answerId')
-  @ApiOkResponse({ description: 'Deletes the answer and returns it' })
-  @ApiNotFoundResponse({
-    description: 'No poll, question or answer with the given id has been found',
-  })
-  async remove(
-    @Param('pollId') pollId: number,
-    @Param('questionId') questionId: number,
-    @Param('answerId') answerId: number,
-    @Res({ passthrough: true }) res: Response,
-  ): Promise<Answer | null> {
-    const answer = await this.answerService.remove(
-      pollId,
-      questionId,
-      answerId,
-    );
-    if (!answer) {
-      res.status(HttpStatus.NOT_FOUND);
-      return;
-    }
+  // @Delete(':answerId')
+  // @ApiOkResponse({ description: 'Deletes the answer and returns it' })
+  // @ApiNotFoundResponse({
+  //   description: 'No poll, question or answer with the given id has been found',
+  // })
+  // async remove(
+  //   @Param('pollId') pollId: number,
+  //   @Param('questionId') questionId: number,
+  //   @Param('answerId') answerId: number,
+  //   @Res({ passthrough: true }) res: Response,
+  // ): Promise<Answer | null> {
+  //   const answer = await this.answerService.remove(
+  //     pollId,
+  //     questionId,
+  //     answerId,
+  //   );
+  //   if (!answer) {
+  //     res.status(HttpStatus.NOT_FOUND);
+  //     return;
+  //   }
 
-    return answer;
-  }
+  //   return answer;
+  // }
 }

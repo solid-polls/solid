@@ -14,6 +14,7 @@ export class AnswerService {
     @Inject(QuestionService)
     private questionService: QuestionService,
   ) {}
+
   async create(
     pollId: number,
     questionId: number,
@@ -21,11 +22,7 @@ export class AnswerService {
   ): Promise<Answer | null> {
     const answer = this.answerRepository.create(createAnswerDto);
 
-    const question = await this.questionService.addAnswerToQuestion(
-      pollId,
-      questionId,
-      answer,
-    );
+    const question = await this.questionService.findOne(pollId, questionId);
     if (!question) return;
 
     answer.question = question;
@@ -53,28 +50,28 @@ export class AnswerService {
     });
   }
 
-  async update(
-    pollId: number,
-    questionId: number,
-    answerId: number,
-    updateAnswerDto: UpdateAnswerDto,
-  ): Promise<Answer | null> {
-    const answer = await this.findOne(pollId, questionId, answerId);
-    if (!answer) return;
+  // async update(
+  //   pollId: number,
+  //   questionId: number,
+  //   answerId: number,
+  //   updateAnswerDto: UpdateAnswerDto,
+  // ): Promise<Answer | null> {
+  //   const answer = await this.findOne(pollId, questionId, answerId);
+  //   if (!answer) return;
 
-    this.answerRepository.merge(answer, updateAnswerDto);
-    return this.answerRepository.save(answer);
-  }
+  //   this.answerRepository.merge(answer, updateAnswerDto);
+  //   return this.answerRepository.save(answer);
+  // }
 
-  async remove(
-    pollId: number,
-    questionId: number,
-    answerId: number,
-  ): Promise<Answer | null> {
-    const answer = await this.findOne(pollId, questionId, answerId);
-    if (!answer) return;
+  // async remove(
+  //   pollId: number,
+  //   questionId: number,
+  //   answerId: number,
+  // ): Promise<Answer | null> {
+  //   const answer = await this.findOne(pollId, questionId, answerId);
+  //   if (!answer) return;
 
-    await this.answerRepository.delete(answer);
-    return answer;
-  }
+  //   await this.answerRepository.delete(answer);
+  //   return answer;
+  // }
 }
