@@ -54,16 +54,4 @@ export class PollService {
   //   await this.pollRepository.delete(poll);
   //   return poll;
   // }
-
-  // async addQuestionToPoll(
-  //   pollId: number,
-  //   question: Question,
-  // ): Promise<Poll | null> {
-  //   const poll = await this.findOne(pollId);
-  //   if (!poll) return;
-
-  //   poll.questions.push(question);
-
-  //   return await this.pollRepository.save(poll);
-  // }
 }

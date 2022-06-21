@@ -63,17 +63,4 @@ export class QuestionService {
   //   await this.questionRepository.delete(question);
   //   return question;
   // }
-
-  // async addAnswerToQuestion(
-  //   pollId: number,
-  //   questionId: number,
-  //   answer: Answer,
-  // ): Promise<Question | null> {
-  //   const question = await this.findOne(pollId, questionId);
-  //   if (!question) return;
-
-  //   question.answers.push(answer);
-
-  //   return await this.questionRepository.save(question);
-  // }
 }
