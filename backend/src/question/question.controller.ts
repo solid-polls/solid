@@ -26,6 +26,11 @@ import { Response } from 'express';
 export class QuestionController {
   constructor(private readonly questionService: QuestionService) {}
 
+  sanitized(question: Question): Question {
+    delete question.poll;
+    return question;
+  }
+
   @Post()
   @ApiCreatedResponse({
     type: Question,
@@ -49,7 +54,7 @@ export class QuestionController {
       return;
     }
 
-    return question;
+    return this.sanitized(question);
   }
 
   @Get()
@@ -65,13 +70,13 @@ export class QuestionController {
     @Param('pollId') pollId: number,
     @Res({ passthrough: true }) res: Response,
   ): Promise<Question[] | null> {
-    const polls = await this.questionService.findAll(pollId);
-    if (!polls) {
+    const questions = await this.questionService.findAll(pollId);
+    if (!questions) {
       res.status(HttpStatus.NOT_FOUND);
       return;
     }
 
-    return polls;
+    return questions.map((question) => this.sanitized(question));
   }
 
   @Get(':questionId')
@@ -94,7 +99,7 @@ export class QuestionController {
       return;
     }
 
-    return question;
+    return this.sanitized(question);
   }
 
   // @Patch(':questionId')

@@ -26,6 +26,11 @@ import { Response } from 'express';
 export class AnswerController {
   constructor(private readonly answerService: AnswerService) {}
 
+  sanitized(answer: Answer): Answer {
+    delete answer.question;
+    return answer;
+  }
+
   @Post()
   @ApiCreatedResponse({
     type: Answer,
@@ -51,7 +56,7 @@ export class AnswerController {
       return;
     }
 
-    return answer;
+    return this.sanitized(answer);
   }
 
   @Get()
@@ -74,7 +79,7 @@ export class AnswerController {
       return;
     }
 
-    return answers;
+    return answers.map((answer) => this.sanitized(answer));
   }
 
   @Get(':answerId')
@@ -102,7 +107,7 @@ export class AnswerController {
       return;
     }
 
-    return answer;
+    return this.sanitized(answer);
   }
 
   // @Patch(':answerId')
