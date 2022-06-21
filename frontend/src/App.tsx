@@ -3,6 +3,8 @@ import { useQuery } from 'react-query';
 import { Link, Route, Switch } from 'wouter';
 import { useState } from 'react';
 import { Button, Container, Stack, TextField, Typography } from '@mui/material';
+import AuthCodeReceiver from './auth/AuthCodeReceiver';
+import LoginPage from './auth/LoginPage';
 
 type PollPageProps = {
   params: { code: string };
@@ -64,6 +66,8 @@ function App() {
 
       <Switch>
         <Route path='/poll/:code' component={PollPage} />
+        <Route path='/auth/callback' component={AuthCodeReceiver} />
+        <Route path='/auth/login' component={LoginPage} />
         <Route path='/' component={HomePage} />
       </Switch>
     </Container>
