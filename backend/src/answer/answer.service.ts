@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import Answer from 'src/models/answer';
-import { QuestionService } from 'src/question/question.service';
+import Answer from '../models/answer';
+import { QuestionService } from '../question/question.service';
 import { Repository } from 'typeorm';
 import { CreateAnswerDto } from './dto/create-answer.dto';
 import { UpdateAnswerDto } from './dto/update-answer.dto';

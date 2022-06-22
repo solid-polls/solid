@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { CreateAnswerDto } from 'src/answer/dto/create-answer.dto';
+import { CreateAnswerDto } from '../../answer/dto/create-answer.dto';
 
 export class CreateQuestionDto {
   @ApiProperty()

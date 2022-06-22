@@ -4,7 +4,7 @@ import { Repository } from 'typeorm';
 import { CreatePollDto } from './dto/create-poll.dto';
 import { UpdatePollDto } from './dto/update-poll.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import Question from 'src/models/question';
+import Question from '../models/question';
 
 @Injectable()
 export class PollService {
