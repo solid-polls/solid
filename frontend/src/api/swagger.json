@@ -15,7 +15,7 @@
         },
         "responses": {
           "201": {
-            "description": "The poll has been created",
+            "description": "Creates the poll and returns it",
             "content": {
               "application/json": {
                 "schema": { "$ref": "#/components/schemas/Poll" }
@@ -67,53 +67,6 @@
           "404": { "description": "No poll with this id has been found" }
         },
         "tags": ["polls"]
-      },
-      "patch": {
-        "operationId": "PollController_update",
-        "parameters": [
-          {
-            "name": "pollId",
-            "required": true,
-            "in": "path",
-            "schema": { "type": "number" }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": { "$ref": "#/components/schemas/UpdatePollDto" }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Updates the poll with this id and returns it",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/Poll" }
-              }
-            }
-          },
-          "404": { "description": "No poll with this id has been found" }
-        },
-        "tags": ["polls"]
-      },
-      "delete": {
-        "operationId": "PollController_remove",
-        "parameters": [
-          {
-            "name": "pollId",
-            "required": true,
-            "in": "path",
-            "schema": { "type": "number" }
-          }
-        ],
-        "responses": {
-          "200": { "description": "The poll has been deleted" },
-          "404": { "description": "The poll has not been found" }
-        },
-        "tags": ["polls"]
       }
     },
     "/polls/byCode/{code}": {
@@ -140,6 +93,215 @@
         },
         "tags": ["polls"]
       }
+    },
+    "/polls/{pollId}/questions": {
+      "post": {
+        "operationId": "QuestionController_create",
+        "parameters": [
+          {
+            "name": "pollId",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "number" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CreateQuestionDto" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Creates the question and returns it",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Question" }
+              }
+            }
+          },
+          "404": { "description": "No poll with this id has been found" }
+        },
+        "tags": ["questions"]
+      },
+      "get": {
+        "operationId": "QuestionController_findAll",
+        "parameters": [
+          {
+            "name": "pollId",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "number" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns all questions of this poll",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Question" }
+                }
+              }
+            }
+          },
+          "404": { "description": "No poll with this id has been found" }
+        },
+        "tags": ["questions"]
+      }
+    },
+    "/polls/{pollId}/questions/{questionId}": {
+      "get": {
+        "operationId": "QuestionController_findOne",
+        "parameters": [
+          {
+            "name": "pollId",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "number" }
+          },
+          {
+            "name": "questionId",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "number" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the question with this id",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Question" }
+              }
+            }
+          },
+          "404": {
+            "description": "No poll or question with the given id has been found"
+          }
+        },
+        "tags": ["questions"]
+      }
+    },
+    "/polls/{pollId}/questions/{questionId}/answers": {
+      "post": {
+        "operationId": "AnswerController_create",
+        "parameters": [
+          {
+            "name": "pollId",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "number" }
+          },
+          {
+            "name": "questionId",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "number" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CreateAnswerDto" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Creates the answer and returns it",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Answer" }
+              }
+            }
+          },
+          "404": {
+            "description": "No poll or question with the given id has been found"
+          }
+        },
+        "tags": ["answers"]
+      },
+      "get": {
+        "operationId": "AnswerController_findAll",
+        "parameters": [
+          {
+            "name": "pollId",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "number" }
+          },
+          {
+            "name": "questionId",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "number" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns all answers of this poll",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Answer" }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No poll or question with the given id has been found"
+          }
+        },
+        "tags": ["answers"]
+      }
+    },
+    "/polls/{pollId}/questions/{questionId}/answers/{answerId}": {
+      "get": {
+        "operationId": "AnswerController_findOne",
+        "parameters": [
+          {
+            "name": "pollId",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "number" }
+          },
+          {
+            "name": "questionId",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "number" }
+          },
+          {
+            "name": "answerId",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "number" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the answers with this id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Answer" }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No poll, question or answer with the given id has been found"
+          }
+        },
+        "tags": ["answers"]
+      }
     }
   },
   "info": {
@@ -155,23 +317,66 @@
   ],
   "components": {
     "schemas": {
+      "CreateAnswerDto": {
+        "type": "object",
+        "properties": { "text": { "type": "string" } },
+        "required": ["text"]
+      },
+      "CreateQuestionDto": {
+        "type": "object",
+        "properties": {
+          "text": { "type": "string" },
+          "answers": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/CreateAnswerDto" }
+          }
+        },
+        "required": ["text", "answers"]
+      },
       "CreatePollDto": {
         "type": "object",
-        "properties": { "title": { "type": "string" } },
-        "required": ["title"]
+        "properties": {
+          "title": { "type": "string" },
+          "questions": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/CreateQuestionDto" }
+          }
+        },
+        "required": ["title", "questions"]
+      },
+      "Answer": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "number" },
+          "text": { "type": "string" },
+          "count": { "type": "number" }
+        },
+        "required": ["id", "text", "count"]
+      },
+      "Question": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "number" },
+          "text": { "type": "string" },
+          "answers": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Answer" }
+          }
+        },
+        "required": ["id", "text", "answers"]
       },
       "Poll": {
         "type": "object",
         "properties": {
           "id": { "type": "number" },
           "title": { "type": "string" },
-          "code": { "type": "string" }
+          "code": { "type": "string" },
+          "questions": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Question" }
+          }
         },
-        "required": ["id", "title", "code"]
-      },
-      "UpdatePollDto": {
-        "type": "object",
-        "properties": { "title": { "type": "string" } }
+        "required": ["id", "title", "code", "questions"]
       }
     }
   }
