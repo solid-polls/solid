@@ -3,7 +3,6 @@ import {
   Controller,
   Delete,
   Get,
-  HttpCode,
   HttpStatus,
   Param,
   Patch,
@@ -12,7 +11,6 @@ import {
 } from '@nestjs/common';
 import {
   ApiCreatedResponse,
-  ApiNoContentResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiTags,
@@ -29,7 +27,10 @@ export class PollController {
   constructor(private readonly pollService: PollService) {}
 
   @Post()
-  @ApiCreatedResponse({ type: Poll, description: 'The poll has been created' })
+  @ApiCreatedResponse({
+    type: Poll,
+    description: 'Creates the poll and returns it',
+  })
   async create(@Body() createPollDto: CreatePollDto): Promise<Poll> {
     return await this.pollService.create(createPollDto);
   }
@@ -81,40 +82,42 @@ export class PollController {
     return poll;
   }
 
-  @Patch(':pollId')
-  @ApiOkResponse({
-    type: Poll,
-    description: 'Updates the poll with this id and returns it',
-  })
-  @ApiNotFoundResponse({
-    type: null,
-    description: 'No poll with this id has been found',
-  })
-  async update(
-    @Param('pollId') pollId: number,
-    @Body() updatePollDto: UpdatePollDto,
-    @Res({ passthrough: true }) res: Response,
-  ): Promise<Poll | void> {
-    const poll = await this.pollService.update(pollId, updatePollDto);
-    if (!poll) {
-      res.status(HttpStatus.NOT_FOUND);
-      return;
-    }
+  // @Patch(':pollId')
+  // @ApiOkResponse({
+  //   type: Poll,
+  //   description: 'Updates the poll with this id and returns it',
+  // })
+  // @ApiNotFoundResponse({
+  //   type: null,
+  //   description: 'No poll with this id has been found',
+  // })
+  // async update(
+  //   @Param('pollId') pollId: number,
+  //   @Body() updatePollDto: UpdatePollDto,
+  //   @Res({ passthrough: true }) res: Response,
+  // ): Promise<Poll | void> {
+  //   const poll = await this.pollService.update(pollId, updatePollDto);
+  //   if (!poll) {
+  //     res.status(HttpStatus.NOT_FOUND);
+  //     return;
+  //   }
 
-    return poll;
-  }
+  //   return poll;
+  // }
 
-  @Delete(':pollId')
-  @HttpCode(204)
-  @ApiNoContentResponse({ description: 'The poll has been deleted' })
-  @ApiNotFoundResponse({ description: 'The poll has not been found' })
-  async remove(
-    @Param('pollId') pollId: number,
-    @Res({ passthrough: true }) res: Response,
-  ): Promise<void> {
-    const removed = await this.pollService.remove(pollId);
-    if (!removed) {
-      res.status(HttpStatus.NOT_FOUND);
-    }
-  }
+  // @Delete(':pollId')
+  // @ApiOkResponse({ description: 'Deletes the poll and returns it' })
+  // @ApiNotFoundResponse({ description: 'No poll with this id has been found' })
+  // async remove(
+  //   @Param('pollId') pollId: number,
+  //   @Res({ passthrough: true }) res: Response,
+  // ): Promise<Poll | null> {
+  //   const poll = await this.pollService.remove(pollId);
+  //   if (!poll) {
+  //     res.status(HttpStatus.NOT_FOUND);
+  //     return;
+  //   }
+
+  //   return poll;
+  // }
 }
