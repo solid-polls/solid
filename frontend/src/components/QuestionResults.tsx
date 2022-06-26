@@ -1,5 +1,5 @@
 import { Answer, Question } from '../client';
-import { Container, Stack } from '@mui/material';
+import { Container, Stack, Typography } from '@mui/material';
 import Chart from 'react-apexcharts';
 
 interface QuestionResultsProps {
@@ -9,6 +9,7 @@ interface QuestionResultsProps {
 export default function QuestionResults(props: QuestionResultsProps) {
   const series = [];
   const labels = [];
+  const title = props.question.text;
 
   // The order of these changes on database changes by voting, to maintain a stable chart, we need to sort the answers by name
   const answers = props.question.answers.sort(answerSorter);
@@ -46,6 +47,7 @@ export default function QuestionResults(props: QuestionResultsProps) {
 
   return (
     <Stack>
+      <Typography marginBottom={2}>{props.question.text}</Typography>
       <Container maxWidth='sm'>
         <Chart options={options} series={series} type='donut' width='100%' />
       </Container>
