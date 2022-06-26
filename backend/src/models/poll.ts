@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import Question from './question';
 
 @Entity('polls')
 export default class Poll {
@@ -14,4 +15,11 @@ export default class Poll {
   @ApiProperty()
   @Column()
   code: string;
+
+  @ApiProperty({ type: [Question] })
+  @OneToMany(() => Question, (question) => question.poll, {
+    eager: true,
+    cascade: ['insert'],
+  })
+  questions: Question[];
 }

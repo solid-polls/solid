@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { CreatePollDto } from './dto/create-poll.dto';
 import { UpdatePollDto } from './dto/update-poll.dto';
 import { InjectRepository } from '@nestjs/typeorm';
+import Question from '../models/question';
 
 @Injectable()
 export class PollService {
@@ -30,25 +31,27 @@ export class PollService {
 
   async findOneByCode(code: string): Promise<Poll | null> {
     const polls = await this.pollRepository.find({ where: { code } });
-    if (polls.length == 0) {
-      return null;
-    }
+    if (polls.length == 0) return;
 
     return polls[0];
   }
 
-  async update(
-    pollId: number,
-    updatePollDto: UpdatePollDto,
-  ): Promise<Poll | null> {
-    const poll = await this.pollRepository.findOne({ where: { id: pollId } });
-    this.pollRepository.merge(poll, updatePollDto);
-    return await this.pollRepository.save(poll);
-  }
+  // async update(
+  //   pollId: number,
+  //   updatePollDto: UpdatePollDto,
+  // ): Promise<Poll | null> {
+  //   const poll = await this.findOne(pollId);
+  //   if (!poll) return;
 
-  async remove(pollId: number): Promise<boolean> {
-    const poll = await this.pollRepository.findOne({ id: pollId });
-    await this.pollRepository.delete(poll);
-    return poll !== undefined;
-  }
+  //   this.pollRepository.merge(poll, updatePollDto);
+  //   return await this.pollRepository.save(poll);
+  // }
+
+  // async remove(pollId: number): Promise<Poll | null> {
+  //   const poll = await this.findOne(pollId);
+  //   if (!poll) return;
+
+  //   await this.pollRepository.delete(poll);
+  //   return poll;
+  // }
 }
