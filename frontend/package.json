@@ -22,6 +22,7 @@
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-query": "^3.39.0",
+    "socket.io-client": "^4.5.1",
     "wouter": "^2.7.5"
   },
   "devDependencies": {

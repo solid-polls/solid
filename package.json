@@ -3,11 +3,12 @@
   "version": "0.0.1",
   "description": "A polling platform.",
   "scripts": {
-    "dev": "concurrently \"cd backend && npm run start:dev\" \"cd frontend && npm run dev\"",
+    "dev": "concurrently \"npm run postgres\" \"cd backend && npm run start:dev\" \"cd frontend && npm run dev\"",
     "postgres": "docker run -p 5432:5432 -e POSTGRES_USER=solid -e POSTGRES_PASSWORD=solid postgres:14-alpine",
     "setup": "npm install && cd frontend && npm install && cd ../backend && npm install",
     "precommit": "concurrently \"cd backend && npm run test && npm run lint\" \"cd frontend && npm run lint\"",
-    "codegen:full": "curl http://localhost:3000/docs-json > frontend/src/api/swagger.json && cd backend && npx prettier --write ../frontend/src/api/swagger.json && cd ../frontend && npm run codegen"
+    "codegen:full": "npm run copytypes && curl http://localhost:3000/docs-json > frontend/src/api/swagger.json && cd backend && npx prettier --write ../frontend/src/api/swagger.json && cd ../frontend && npm run codegen",
+    "copytypes": "cd backend/src/types && for f in *; do echo -e '/* Edit this file in backend/src/types */\n' > ../../../frontend/src/types/$f && cat $f >> ../../../frontend/src/types/$f; done"
   },
   "repository": {
     "type": "git",
