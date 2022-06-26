@@ -5,6 +5,7 @@ import { QuestionService } from '../question/question.service';
 import { Repository } from 'typeorm';
 import { CreateAnswerDto } from './dto/create-answer.dto';
 import { UpdateAnswerDto } from './dto/update-answer.dto';
+import { VoteGateway } from '../vote/vote.gateway';
 
 @Injectable()
 export class AnswerService {
@@ -13,6 +14,8 @@ export class AnswerService {
     private answerRepository: Repository<Answer>,
     @Inject(QuestionService)
     private questionService: QuestionService,
+    @Inject(VoteGateway)
+    private voteGateway: VoteGateway,
   ) {}
 
   async create(
@@ -56,6 +59,8 @@ export class AnswerService {
       'count',
       1,
     );
+    this.voteGateway.notifyListeners();
+
     return result.affected == 1;
   }
 

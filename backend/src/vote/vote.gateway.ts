@@ -5,24 +5,17 @@ import {
 } from '@nestjs/websockets';
 import { Server } from 'socket.io';
 
-interface UpdatePayload {
-  votes: number;
-}
-
 interface ServerToClientEvents {
-  update: (payload: UpdatePayload) => void;
+  update: () => void;
 }
 
-export type VoteServer = Server<ClientToServerEvents, ServerToClientEvents>;
+export type VoteServer = Server<Record<string, never>, ServerToClientEvents>;
 
 @WebSocketGateway()
 export class VoteGateway {
   @WebSocketServer() server: VoteServer;
-  private votes = 0;
 
-  @SubscribeMessage('vote')
-  handleMessage(client: any, payload: VotePayload): void {
-    this.votes++;
-    this.server.emit('update', { votes: this.votes });
+  notifyListeners() {
+    this.server.emit('update');
   }
 }
