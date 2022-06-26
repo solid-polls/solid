@@ -1,18 +1,8 @@
-import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { answersApi, pollsApi } from './api';
-import {
-  Box,
-  Button,
-  Card,
-  FormControlLabel,
-  Radio,
-  RadioGroup,
-  Stack,
-  Typography,
-} from '@mui/material';
-import { useEffect, useState } from 'react';
-import { Answer, Poll, Question } from './client';
-import useVoteClient, { VoteClient } from './hooks/useVoteClient';
+import { useQuery, useQueryClient } from 'react-query';
+import { pollsApi } from './api';
+import { Typography } from '@mui/material';
+import { useEffect } from 'react';
+import useVoteClient from './hooks/useVoteClient';
 import LoadedPoll from './components/LoadedPoll';
 
 type PollPageProps = {
@@ -30,7 +20,7 @@ export default function PollPage(props: PollPageProps) {
     if (!voteClient) {
       return;
     }
-    voteClient.on('update', (payload) => {
+    voteClient.on('update', () => {
       queryClient.invalidateQueries(['poll', props.params.code]);
     });
     return () => {
