@@ -11,6 +11,7 @@ import {
 } from '@nestjs/common';
 import {
   ApiCreatedResponse,
+  ApiNoContentResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiTags,
@@ -108,6 +109,28 @@ export class AnswerController {
     }
 
     return this.sanitized(answer);
+  }
+
+  @Post(':answerId/vote')
+  @ApiNoContentResponse({
+    description: 'Vote recorded successfully',
+  })
+  @ApiNotFoundResponse({
+    type: null,
+    description: 'No answer with the given id has been found',
+  })
+  async vote(
+    @Param('pollId') pollId: number,
+    @Param('questionId') questionId: number,
+    @Param('answerId') answerId: number,
+    @Res({ passthrough: true }) res: Response,
+  ): Promise<null> {
+    const result = await this.answerService.increaseCount(answerId);
+    if (!result) {
+      res.status(404);
+      return;
+    }
+    res.status(204);
   }
 
   // @Patch(':answerId')

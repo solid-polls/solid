@@ -50,6 +50,15 @@ export class AnswerService {
     });
   }
 
+  async increaseCount(answerId: number): Promise<boolean> {
+    const result = await this.answerRepository.increment(
+      { id: answerId },
+      'count',
+      1,
+    );
+    return result.affected == 1;
+  }
+
   // async update(
   //   pollId: number,
   //   questionId: number,

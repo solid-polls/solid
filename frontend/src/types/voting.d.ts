@@ -9,8 +9,6 @@ interface ServerToClientEvents {
 }
 
 interface VotePayload {
-  pollCode: string;
-  questionID: number;
   answerID: number;
 }
 

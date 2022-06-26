@@ -1,8 +1,17 @@
-import { useQuery } from 'react-query';
-import { pollsApi } from './api';
-import { Button, Stack, Typography } from '@mui/material';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { answersApi, pollsApi } from './api';
+import {
+  Box,
+  Button,
+  Card,
+  FormControlLabel,
+  Radio,
+  RadioGroup,
+  Stack,
+  Typography,
+} from '@mui/material';
 import { useEffect, useState } from 'react';
-import { Poll } from './client';
+import { Answer, Poll, Question } from './client';
 import useVoteClient, { VoteClient } from './hooks/useVoteClient';
 
 type PollPageProps = {
@@ -10,39 +19,102 @@ type PollPageProps = {
 };
 
 interface QuestionResultsProps {
-  poll: Poll;
-  questionIndex: number;
-  numVotes: number;
+  question: Question;
 }
 
 function QuestionResults(props: QuestionResultsProps) {
   return (
     <Stack>
       <Typography variant='body1'>
-        The poll: {JSON.stringify(props.poll)}
+        The question: {JSON.stringify(props.question)}
       </Typography>
-      <Typography variant='body1'>Votes: {props.numVotes}</Typography>
     </Stack>
   );
 }
 
 interface QuestionVoterProps {
-  poll: Poll;
-  questionIndex: number;
-  voteClient: VoteClient;
+  pollId: number;
+  question: Question;
   onAfterVote: () => void;
 }
 
 function QuestionVoter(props: QuestionVoterProps) {
-  const onVote = () => {
-    props.voteClient.emit('vote', {
-      pollCode: props.poll.code,
-      questionID: 0,
-      answerID: 0,
-    });
-    props.onAfterVote();
-  };
-  return <Button onClick={onVote}>Vote</Button>;
+  const queryClient = useQueryClient();
+  const { mutate } = useMutation(
+    'vote',
+    (answerId: number) =>
+      answersApi
+        .answerControllerVote({
+          pollId: props.pollId,
+          questionId: props.question.id,
+          answerId,
+        })
+        .then(() => queryClient.invalidateQueries('poll')),
+    { onSuccess: () => props.onAfterVote() },
+  );
+  const [selectedAnswerId, setSelectedAnswerId] = useState(-1);
+  return (
+    <Box>
+      <Typography marginBottom={2}>{props.question.text}</Typography>
+      {props.question.answers.length === 0 ? (
+        <Typography>No answers were configured for this question.</Typography>
+      ) : (
+        <Box marginBottom={2}>
+          <RadioGroup
+            value={selectedAnswerId}
+            onChange={(event) => setSelectedAnswerId(+event.target.value)}
+          >
+            {props.question.answers.map((answer) => (
+              <FormControlLabel
+                key={answer.id}
+                control={<Radio />}
+                label={answer.text}
+                value={answer.id}
+              />
+            ))}
+          </RadioGroup>
+        </Box>
+      )}
+      <Button onClick={() => mutate(selectedAnswerId)} variant='contained'>
+        Submit
+      </Button>
+    </Box>
+  );
+}
+
+interface LoadedPollProps {
+  poll: Poll;
+  voteClient: VoteClient;
+}
+
+function LoadedPoll(props: LoadedPollProps) {
+  const [questionIndex] = useState(0);
+  const [voted, setVoted] = useState<Set<number>>(new Set());
+  return (
+    <>
+      <Typography variant='h3' marginBottom={2}>
+        {props.poll.title}
+      </Typography>
+
+      {questionIndex < props.poll.questions.length ? (
+        <>
+          {voted.has(questionIndex) ? (
+            <QuestionResults question={props.poll.questions[questionIndex]} />
+          ) : (
+            <QuestionVoter
+              question={props.poll.questions[questionIndex]}
+              pollId={props.poll.id}
+              onAfterVote={() => {
+                setVoted(new Set([...voted, questionIndex]));
+              }}
+            />
+          )}
+        </>
+      ) : (
+        <Typography>No questions have been added to this poll yet.</Typography>
+      )}
+    </>
+  );
 }
 
 export default function PollPage(props: PollPageProps) {
@@ -51,15 +123,12 @@ export default function PollPage(props: PollPageProps) {
     () => pollsApi.pollControllerFindByCode({ code: props.params.code }),
   );
   const voteClient = useVoteClient(props.params.code);
-  const [questionIndex] = useState(0);
-  const [voted, setVoted] = useState<Set<number>>(new Set());
-  const [numVotes, setNumVotes] = useState(0);
   useEffect(() => {
     if (!voteClient) {
       return;
     }
     voteClient.on('update', (payload) => {
-      setNumVotes(payload.votes);
+      console.log('update', payload);
     });
     return () => {
       voteClient.removeListener('update');
@@ -68,27 +137,11 @@ export default function PollPage(props: PollPageProps) {
 
   return (
     <>
-      <Typography variant='h1'>Poll Page</Typography>
       {isLoading ||
         (!voteClient && <Typography variant='body1'>Loading ...</Typography>)}
-      {isSuccess &&
-        voteClient &&
-        (voted.has(questionIndex) ? (
-          <QuestionResults
-            poll={data}
-            questionIndex={questionIndex}
-            numVotes={numVotes}
-          />
-        ) : (
-          <QuestionVoter
-            poll={data}
-            voteClient={voteClient}
-            questionIndex={questionIndex}
-            onAfterVote={() => {
-              setVoted(new Set([...voted, questionIndex]));
-            }}
-          />
-        ))}
+      {isSuccess && voteClient && (
+        <LoadedPoll poll={data} voteClient={voteClient} />
+      )}
       {isError && (
         <Typography variant='body1'>
           Could not fetch resource: {JSON.stringify(error)}
