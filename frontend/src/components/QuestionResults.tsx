@@ -43,7 +43,7 @@ export default function QuestionResults(props: QuestionResultsProps) {
 
   return (
     <Stack>
-      <Typography marginBottom={2}>{props.question.text}</Typography>
+      <Typography marginBottom={2}>{title}</Typography>
       <Container maxWidth='sm'>
         <Chart options={options} series={series} type='donut' width='100%' />
       </Container>
