@@ -37,7 +37,6 @@ export default function HomePage() {
         <Typography variant='body1'>Please enter your poll code:</Typography>
         <TextField
           label='Poll code'
-          placeholder='12345678'
           type='text'
           variant='outlined'
           onChange={(event) => setCode(event.target.value)}

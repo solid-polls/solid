@@ -1,11 +1,7 @@
 import { WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
 import { Server } from 'socket.io';
 
-interface ServerToClientEvents {
-  update: () => void;
-}
-
-export type VoteServer = Server<Record<string, never>, ServerToClientEvents>;
+export type VoteServer = Server<ClientToServerEvents, ServerToClientEvents>;
 
 @WebSocketGateway()
 export class VoteGateway {

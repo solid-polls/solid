@@ -1,6 +1,11 @@
+<<<<<<< HEAD
 import { Answer, Question } from '../client';
 import { Container, Stack, Typography } from '@mui/material';
 import Chart from 'react-apexcharts';
+=======
+import { Question } from '../client';
+import { Stack, Typography } from '@mui/material';
+>>>>>>> main
 
 interface QuestionResultsProps {
   question: Question;
