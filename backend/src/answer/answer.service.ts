@@ -5,6 +5,7 @@ import { QuestionService } from '../question/question.service';
 import { Repository } from 'typeorm';
 import { CreateAnswerDto } from './dto/create-answer.dto';
 import { UpdateAnswerDto } from './dto/update-answer.dto';
+import { VoteGateway } from '../vote/vote.gateway';
 
 @Injectable()
 export class AnswerService {
@@ -13,6 +14,8 @@ export class AnswerService {
     private answerRepository: Repository<Answer>,
     @Inject(QuestionService)
     private questionService: QuestionService,
+    @Inject(VoteGateway)
+    private voteGateway: VoteGateway,
   ) {}
 
   async create(
@@ -48,6 +51,17 @@ export class AnswerService {
     return await this.answerRepository.findOne({
       where: { question, id: answerId },
     });
+  }
+
+  async increaseCount(answerId: number): Promise<boolean> {
+    const result = await this.answerRepository.increment(
+      { id: answerId },
+      'count',
+      1,
+    );
+    this.voteGateway.notifyListeners();
+
+    return result.affected == 1;
   }
 
   // async update(

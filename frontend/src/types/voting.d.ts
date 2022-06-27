@@ -1,19 +1,7 @@
 /* Edit this file in backend/src/types */
 
-interface UpdatePayload {
-  votes: number;
-}
-
 interface ServerToClientEvents {
-  update: (payload: UpdatePayload) => void;
+  update: () => void;
 }
 
-interface VotePayload {
-  pollCode: string;
-  questionID: number;
-  answerID: number;
-}
-
-interface ClientToServerEvents {
-  vote: (payload: VotePayload) => void;
-}
+type ClientToServerEvents = Record<string, never>;

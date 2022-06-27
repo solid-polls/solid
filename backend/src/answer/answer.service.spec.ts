@@ -3,6 +3,7 @@ import { QuestionService } from '../question/question.service';
 import { Repository } from 'typeorm';
 import { AnswerService } from './answer.service';
 import { PollService } from '../poll/poll.service';
+import { VoteGateway } from '../vote/vote.gateway';
 
 describe('AnswerService', () => {
   let service: AnswerService;
@@ -12,6 +13,7 @@ describe('AnswerService', () => {
       providers: [
         AnswerService,
         QuestionService,
+        VoteGateway,
         PollService,
         {
           provide: 'AnswerRepository',

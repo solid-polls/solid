@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { AnswerController } from './answer.controller';
 import { AnswerService } from './answer.service';
 import { PollService } from '../poll/poll.service';
+import { VoteGateway } from '../vote/vote.gateway';
 
 describe('AnswerController', () => {
   let controller: AnswerController;
@@ -15,6 +16,7 @@ describe('AnswerController', () => {
         AnswerService,
         QuestionService,
         PollService,
+        VoteGateway,
         {
           provide: 'AnswerRepository',
           useClass: Repository,

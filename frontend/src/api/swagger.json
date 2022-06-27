@@ -302,6 +302,36 @@
         },
         "tags": ["answers"]
       }
+    },
+    "/polls/{pollId}/questions/{questionId}/answers/{answerId}/vote": {
+      "post": {
+        "operationId": "AnswerController_vote",
+        "parameters": [
+          {
+            "name": "pollId",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "number" }
+          },
+          {
+            "name": "questionId",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "number" }
+          },
+          {
+            "name": "answerId",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "number" }
+          }
+        ],
+        "responses": {
+          "204": { "description": "Vote recorded successfully" },
+          "404": { "description": "No answer with the given id has been found" }
+        },
+        "tags": ["answers"]
+      }
     }
   },
   "info": {
