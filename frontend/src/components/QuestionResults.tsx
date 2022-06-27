@@ -7,17 +7,13 @@ interface QuestionResultsProps {
 }
 
 export default function QuestionResults(props: QuestionResultsProps) {
-  const series = [];
-  const labels = [];
   const title = props.question.text;
 
   // The order of these changes on database changes by voting, to maintain a stable chart, we need to sort the answers by name
   const answers = props.question.answers.sort(answerSorter);
 
-  for (const answer of answers) {
-    series.push(answer.count);
-    labels.push(answer.text);
-  }
+  const series = answers.map((answer) => answer.count);
+  const labels = answers.map((answer) => answer.text);
 
   const options = {
     labels,
