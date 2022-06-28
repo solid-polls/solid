@@ -14,7 +14,7 @@ async function bootstrap() {
   const config = new DocumentBuilder()
     .setTitle('Solid Polls')
     .addServer('http://localhost:3000', 'Testing')
-    .addServer('https://solidpolls.de/api', 'Production')
+    .addServer('https://api.solidpolls.de', 'Production')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
