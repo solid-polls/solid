@@ -2,6 +2,7 @@ import { useState } from 'react';
 import {
   Alert,
   Button,
+  Divider,
   Snackbar,
   Stack,
   TextField,
@@ -9,7 +10,7 @@ import {
 } from '@mui/material';
 import useSetPageTitle from './hooks/useSetPageTitle';
 import { pollsApi } from './api';
-import { useLocation } from 'wouter';
+import { Link, useLocation } from 'wouter';
 
 export default function HomePage() {
   const [code, setCode] = useState('');
@@ -53,6 +54,15 @@ export default function HomePage() {
         >
           Join
         </Button>
+        <Divider />
+        <Typography variant='body1'>
+          If you want to host a poll, you have to create a poll first.
+        </Typography>
+        <Link href='/new'>
+          <Button variant='contained' type='button'>
+            Create poll
+          </Button>
+        </Link>
       </Stack>
     </>
   );
