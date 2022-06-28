@@ -1,17 +1,15 @@
-import { Link, Route, Switch, useLocation } from 'wouter';
-import { useState } from 'react';
+import { Link, Route, Switch } from 'wouter';
 import {
   AppBar,
   Box,
   Button,
   Container,
-  Stack,
-  TextField,
   Toolbar,
   Typography,
 } from '@mui/material';
 import PollPage from './PollPage';
 import HomePage from './HomePage';
+import CreatePollPage from './CreatePollPage';
 
 function App() {
   return (
@@ -35,6 +33,7 @@ function App() {
       <Container maxWidth='md'>
         <Switch>
           <Route path='/poll/:code' component={PollPage} />
+          <Route path='/new' component={CreatePollPage} />
           <Route path='/' component={HomePage} />
         </Switch>
       </Container>
