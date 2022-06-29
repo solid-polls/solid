@@ -8,7 +8,7 @@ export default function useVoteClient(pollCode: string): VoteClient | null {
   useEffect(() => {
     const client = io(
       import.meta.env.PROD
-        ? 'https://app.solidpolls.de/api'
+        ? 'https://api.solidpolls.de'
         : 'http://localhost:3000',
       { transports: ['websocket'] },
     );
