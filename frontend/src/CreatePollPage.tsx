@@ -12,6 +12,7 @@ import { Children, useReducer, useState } from 'react';
 import { pollsApi } from './api';
 import { Poll } from './client';
 import QuestionEditor from './components/QuestionEditor';
+import useSetPageTitle from './hooks/useSetPageTitle';
 
 export type CreateAnswerState = { id: number; text: string };
 export type CreateQuestionState = {
@@ -190,6 +191,7 @@ function pollReducer(
 }
 
 export default function CreatePollPage() {
+  useSetPageTitle('Create Poll');
   const [{ title, questions, created, pollCode }, dispatch] = useReducer(
     pollReducer,
     {
