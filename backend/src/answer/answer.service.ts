@@ -53,7 +53,7 @@ export class AnswerService {
     });
   }
 
-  async increaseCount(answerId: number): Promise<boolean> {
+  async increaseCount(questionId: number, answerId: number): Promise<boolean> {
     const result = await this.answerRepository.increment(
       { id: answerId },
       'count',
@@ -64,7 +64,7 @@ export class AnswerService {
       return false;
     }
 
-    this.redis.publish('vote', '');
+    this.redis.publish('vote', questionId.toString());
     return true;
   }
 

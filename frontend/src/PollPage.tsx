@@ -1,7 +1,8 @@
+import { Socket } from 'socket.io-client';
 import { useQuery, useQueryClient } from 'react-query';
 import { pollsApi } from './api';
 import { Typography } from '@mui/material';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import useVoteClient from './hooks/useVoteClient';
 import LoadedPoll from './components/LoadedPoll';
 
@@ -16,6 +17,7 @@ export default function PollPage(props: PollPageProps) {
   );
   const queryClient = useQueryClient();
   const voteClient = useVoteClient(props.params.code);
+  const [isSubscribed, setSubscribed] = useState(false);
   useEffect(() => {
     if (!voteClient) {
       return;
@@ -27,6 +29,11 @@ export default function PollPage(props: PollPageProps) {
       voteClient.removeListener('update');
     };
   }, [voteClient]);
+
+  if (isSuccess && voteClient && data.questions.length > 0 && !isSubscribed) {
+    voteClient.emit('subscribeToQuestion', data.questions[0].id.toString());
+    setSubscribed(true);
+  }
 
   return (
     <>

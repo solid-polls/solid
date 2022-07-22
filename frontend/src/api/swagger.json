@@ -343,7 +343,7 @@
   "tags": [],
   "servers": [
     { "url": "http://localhost:3000", "description": "Testing" },
-    { "url": "https://solidpolls.de/api", "description": "Production" }
+    { "url": "https://api.solidpolls.de", "description": "Production" }
   ],
   "components": {
     "schemas": {
