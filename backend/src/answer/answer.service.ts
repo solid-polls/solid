@@ -6,6 +6,7 @@ import { Repository } from 'typeorm';
 import { CreateAnswerDto } from './dto/create-answer.dto';
 import { UpdateAnswerDto } from './dto/update-answer.dto';
 import { VoteGateway } from '../vote/vote.gateway';
+import { InjectRedis, Redis } from '@nestjs-modules/ioredis';
 
 @Injectable()
 export class AnswerService {
@@ -14,8 +15,7 @@ export class AnswerService {
     private answerRepository: Repository<Answer>,
     @Inject(QuestionService)
     private questionService: QuestionService,
-    @Inject(VoteGateway)
-    private voteGateway: VoteGateway,
+    @InjectRedis() private readonly redis: Redis,
   ) {}
 
   async create(
@@ -59,9 +59,13 @@ export class AnswerService {
       'count',
       1,
     );
-    this.voteGateway.notifyListeners();
 
-    return result.affected == 1;
+    if (result.affected == 0) {
+      return false;
+    }
+
+    this.redis.publish('vote', '');
+    return true;
   }
 
   // async update(
