@@ -29,7 +29,7 @@ jobs:
         tags: ghcr.io/solid-polls/solid/solid-backend:${{ env.BRANCH }}
     - name: Deploy
       uses: appleboy/ssh-action@master
-      #if: ${{ env.BRANCH == 'main' }}
+      if: ${{ env.BRANCH == 'main' }}
       with:
         host: ${{ secrets.HOST }}
         username: ${{ secrets.USERNAME }}
