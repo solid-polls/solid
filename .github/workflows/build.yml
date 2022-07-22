@@ -27,15 +27,11 @@ jobs:
         push: true
         context: ./backend
         tags: ghcr.io/solid-polls/solid/solid-backend:${{ env.BRANCH }}
-    - uses: danielr1996/kubectl-action@1.0.0
-      name: Deploy Frontend
+    - name: Deploy
+      uses: appleboy/ssh-action@master
       if: ${{ env.BRANCH == 'main' }}
       with:
-        kubeconfig: ${{ secrets.KUBE_CONFIG }}
-        args: rollout restart deployment/frontend
-    - uses: danielr1996/kubectl-action@1.0.0
-      name: Deploy Backend
-      if: ${{ env.BRANCH == 'main' }}
-      with:
-        kubeconfig: ${{ secrets.KUBE_CONFIG }}
-        args: rollout restart deployment/backend
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        key: ${{ secrets.KEY }}
+        script: /root/update.sh
