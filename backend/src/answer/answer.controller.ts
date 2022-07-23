@@ -125,7 +125,7 @@ export class AnswerController {
     @Param('answerId') answerId: number,
     @Res({ passthrough: true }) res: Response,
   ): Promise<null> {
-    const result = await this.answerService.increaseCount(answerId);
+    const result = await this.answerService.increaseCount(questionId, answerId);
     if (!result) {
       res.status(404);
       return;

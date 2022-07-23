@@ -4,4 +4,6 @@ interface ServerToClientEvents {
   update: () => void;
 }
 
-type ClientToServerEvents = Record<string, never>;
+interface ClientToServerEvents {
+  subscribeToQuestion: (string) => void;
+}
