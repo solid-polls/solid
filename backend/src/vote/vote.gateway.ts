@@ -1,6 +1,12 @@
-import { WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
+import {
+  ConnectedSocket,
+  MessageBody,
+  SubscribeMessage,
+  WebSocketGateway,
+  WebSocketServer,
+} from '@nestjs/websockets';
 import { InjectRedis, Redis } from '@nestjs-modules/ioredis';
-import { Server } from 'socket.io';
+import { Server, Socket } from 'socket.io';
 
 export type VoteServer = Server<ClientToServerEvents, ServerToClientEvents>;
 
@@ -12,12 +18,21 @@ export class VoteGateway {
   constructor(@InjectRedis() private readonly redis: Redis) {
     this.subscriber = this.redis.duplicate();
     this.subscriber.subscribe('vote');
-    this.subscriber.on('message', () => {
-      this.notifyListeners();
+    this.subscriber.on('message', (channel, message) => {
+      this.notifyListeners(message);
     });
   }
 
-  notifyListeners() {
-    this.server.emit('update');
+  @SubscribeMessage('subscribeToQuestion')
+  handleEvent(
+    @MessageBody() questionId: string,
+    @ConnectedSocket()
+    client: Socket<ClientToServerEvents, ServerToClientEvents>,
+  ) {
+    client.join(questionId);
+  }
+
+  notifyListeners(questionId: string) {
+    this.server.to(questionId).emit('update');
   }
 }
